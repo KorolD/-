@@ -6,11 +6,11 @@
 	}
 
 	ItemStack::~ItemStack(){
-		if(!stack_ptr){
+		if (!stack_ptr) {
 			return;
 		}
 		struct Item* temp = stack_ptr;  //темп нужен т.к. стэк однонаправленный
-		while(stack_ptr){
+		while (stack_ptr) {
 			stack_ptr = stack_ptr -> next;
 			delete temp;
 			temp = stack_ptr;
@@ -20,7 +20,7 @@
 	}
 
 	bool ItemStack::IsEmpty(){
-		if(stack_ptr){
+		if (stack_ptr) {
 			return true;
 		}else{
 			return false;
@@ -29,8 +29,8 @@
 
 	struct Item* ItemStack::FindKey(int key){
 		struct Item *temp = stack_ptr;
-		while(temp){
-			if(temp -> key == key){
+		while (temp) {
+			if (temp -> key == key) {
 				return temp;
 			}
 			temp = temp -> next;
@@ -39,18 +39,18 @@
 	}
 
 	void ItemStack::DeleteKey(int key){
-		if(!stack_ptr){
+		if (!stack_ptr) {
 			return;
 		}
-		if(key == stack_ptr -> key){ //это можно проверить ниже в while
+		if (key == stack_ptr -> key) { //это можно проверить ниже в while
 			struct Item *temp = stack_ptr; //но тогда этот while не будет таким же понятным и простым
 			stack_ptr = stack_ptr -> next;
 			delete temp;
 			return;
 		}
 		struct Item *temp0 = stack_ptr, *temp = stack_ptr -> next;
-		while(temp){
-			if(temp -> key == key){
+		while (temp) {
+			if (temp -> key == key) {
 				temp0 -> next = temp -> next;
 				delete temp;
 				return;
@@ -62,7 +62,7 @@
 	}
 
 	void ItemStack::Add(int key, String data){
-		if(!stack_ptr){    //если стэк пуст, создаём его
+		if (!stack_ptr) {    //если стэк пуст, создаём его
 			stack_ptr = new struct Item;
 			stack_ptr -> key = key;
 			stack_ptr -> data = data;
@@ -80,7 +80,7 @@
 	String ItemStack::Show(){
 		struct Item* temp = stack_ptr;
 		String out = "";
-		while(temp){
+		while (temp) {
 			out += IntToStr(temp->key) + "-" + temp -> data + ", ";
 			temp = temp -> next;
 		}
@@ -91,7 +91,7 @@
 	int ItemStack::GetAmount(){
 		int amount = 0;
 		struct Item* temp = stack_ptr;
-		while(temp){
+		while (temp) {
 			amount++;
 			temp = temp -> next;
 		}
@@ -102,7 +102,7 @@
 		int num = GetAmount();
 		double average = 0;
 		struct Item* temp = stack_ptr;
-		while(temp){
+		while (temp) {
 			average += double(temp -> key) / num;
 			temp = temp -> next;
 		}
@@ -112,8 +112,8 @@
 	int ItemStack::LessThanOrEq(double average){
 		struct Item* temp = stack_ptr;
 		int amount = 0;
-		while(temp){
-			if(temp -> key <= average){
+		while (temp) {
+			if (temp -> key <= average) {
 				amount++;
 			}
 			temp = temp -> next;
