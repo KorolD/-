@@ -15,12 +15,12 @@ TForm1 *Form1;
 class InheritantSheet* sheet=NULL;
 
 bool IsInt(String s){ //true - если s состоит только из цифр и возможно '-' первым символом
-	if(!s.Length()){
+	if (!s.Length()) {
 		return false;
 	}
-	for(int i = 1; i <= s.Length(); i++){
-		if(s[i] > '9' || s[i] < '0'){
-			if(i == 1 && s[1] == '-'){
+	for (int i = 1; i <= s.Length(); i++) {
+		if (s[i] > '9' || s[i] < '0') {
+			if (i == 1 && s[1] == '-') {
 				continue;
 			}else{
 				return false;
@@ -31,8 +31,8 @@ bool IsInt(String s){ //true - если s состоит только из ци�
 }
 void ShowSheet(){   //выводит всю таблицу в мемо1
 	Form1 -> Memo1 -> Lines -> Clear();
-	if(sheet){
-		for(int i = 0; i < sheet -> GetLinesAmount(); i++){
+	if (sheet) {
+		for (int i = 0; i < sheet -> GetLinesAmount(); i++) {
 			Form1 -> Memo1 -> Lines -> Add(sheet -> ShowNum(i));
 		}
 	}
@@ -49,19 +49,19 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 void __fastcall TForm1::Button1Click(TObject *Sender) //Заполнить
 {
 	int amount = 1; //кол-во элементов
-	while(IsInt(StringGrid1 -> Cells[0][amount]) && amount < 100){
+	while (IsInt(StringGrid1 -> Cells[0][amount]) && amount < 100) {
 		amount++;
 	}
 	amount--;
-	if(!amount){  //если нечем заполнять
+	if (!amount) {  //если нечем заполнять
 		ShowSheet();
 		return;
 	}
-	if(sheet){  //удаляет старую таблицу
+	if (sheet) {  //удаляет старую таблицу
 		sheet -> ~InheritantSheet();
 	}
-	sheet=new InheritantSheet(amount); //кол-во адресов=ков-ву элементов, это делает работу
-	for(int i = 1; i <= amount; i++){      //с таблицей более наглядной
+	sheet = new InheritantSheet(amount); //кол-во адресов=ков-ву элементов, это делает работу
+	for (int i = 1; i <= amount; i++) {      //с таблицей более наглядной
 		sheet -> Add(StringGrid1 -> Cells[0][i].ToInt(), StringGrid1 -> Cells[1][i]);
 	}
 	ShowSheet();
@@ -70,8 +70,8 @@ void __fastcall TForm1::Button1Click(TObject *Sender) //Заполнить
 //---------------------------------------------------------------------------
 void __fastcall TForm1::Button3Click(TObject *Sender) //Добавить
 {
-	if(IsInt(Edit1->Text)){
-		if(!sheet){ //если таблицы ещё нет, то создадим таблицу с 29 адресами
+	if (IsInt(Edit1->Text)) {
+		if (!sheet) { //если таблицы ещё нет, то создадим таблицу с 29 адресами
 			sheet = new InheritantSheet(29);//29-простое число, и потому слуяайные ключи
 		}                                 //прекрасно распределятся по таблице
 		sheet -> Add(Edit1 -> Text.ToInt(), Edit2 -> Text);
@@ -85,13 +85,13 @@ void __fastcall TForm1::Button3Click(TObject *Sender) //Добавить
 void __fastcall TForm1::Button2Click(TObject *Sender)//Удалить
 {
 	if(IsInt(Edit1 -> Text)){
-		if(sheet){
+		if (sheet) {
 			sheet -> DeleteKey(Edit1 -> Text.ToInt());
 		}else{
 			ShowMessage("Таблица пуста");
 			return;
         }
-		if(!sheet -> GetAmountTotal()){
+		if (!sheet -> GetAmountTotal()) {
 			sheet -> ~InheritantSheet();
 			sheet = NULL;
 		}
@@ -104,10 +104,10 @@ void __fastcall TForm1::Button2Click(TObject *Sender)//Удалить
 //---------------------------------------------------------------------------
 void __fastcall TForm1::Button4Click(TObject *Sender) //Найти
 {
-	if(IsInt(Edit1 -> Text)){
-		if(sheet){
+	if (IsInt(Edit1 -> Text)) {
+		if (sheet) {
 			String* temp = sheet -> FindKey(Edit1 -> Text.ToInt());
-			if(temp){ //может вернуться NULL, если ключ не найден
+			if (temp) { //может вернуться NULL, если ключ не найден
 				Memo1 -> Lines -> Clear();
 				Memo1 -> Lines -> Add("Ключ:");
 				Memo1 -> Lines -> Add(Edit1 -> Text);
@@ -128,8 +128,8 @@ void __fastcall TForm1::Button4Click(TObject *Sender) //Найти
 //---------------------------------------------------------------------------
 void __fastcall TForm1::Button5Click(TObject *Sender)//ключи <= среднего
 {
-	if(sheet){
-		if(!sheet -> GetAmountTotal()){
+	if (sheet) {
+		if (!sheet -> GetAmountTotal()) {
 			ShowMessage("Таблица пуста");
 		}else{
 			double average = sheet -> Average();
@@ -147,7 +147,7 @@ void __fastcall TForm1::Button5Click(TObject *Sender)//ключи <= средн�
 //---------------------------------------------------------------------------
 void __fastcall TForm1::Button7Click(TObject *Sender)//Выход
 {
-	if(sheet){
+	if (sheet) {
 		sheet -> ~InheritantSheet();
 	}
 	Close();
