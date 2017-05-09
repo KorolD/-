@@ -1,9 +1,9 @@
 #define FLOOR(a) (double(int((a)*10000+0.5))/10000)
-						//при приведении double к int отсекается дробная часть
-/*т.к. про уникальность ключей никто ничего не говорил, эта проверка отсутсвует.
-  Но, если встретятся несколько одинаковых ключей, все операции будут проходить с вершиной стека с одинаковым ключом
-  Таким образом "Это не баг, это фича"
-  Или вообще дополнительная функциональность
+						//РїСЂРё РїСЂРёРІРµРґРµРЅРёРё double Рє int РѕС‚СЃРµРєР°РµС‚СЃСЏ РґСЂРѕР±РЅР°СЏ С‡Р°СЃС‚СЊ
+/*С‚.Рє. РїСЂРѕ СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚СЊ РєР»СЋС‡РµР№ РЅРёРєС‚Рѕ РЅРёС‡РµРіРѕ РЅРµ РіРѕРІРѕСЂРёР», СЌС‚Р° РїСЂРѕРІРµСЂРєР° РѕС‚СЃСѓС‚СЃРІСѓРµС‚.
+  РќРѕ, РµСЃР»Рё РІСЃС‚СЂРµС‚СЏС‚СЃСЏ РЅРµСЃРєРѕР»СЊРєРѕ РѕРґРёРЅР°РєРѕРІС‹С… РєР»СЋС‡РµР№, РІСЃРµ РѕРїРµСЂР°С†РёРё Р±СѓРґСѓС‚ РїСЂРѕС…РѕРґРёС‚СЊ СЃ РІРµСЂС€РёРЅРѕР№ СЃС‚РµРєР° СЃ РѕРґРёРЅР°РєРѕРІС‹Рј РєР»СЋС‡РѕРј
+  РўР°РєРёРј РѕР±СЂР°Р·РѕРј "Р­С‚Рѕ РЅРµ Р±Р°Рі, СЌС‚Рѕ С„РёС‡Р°"
+  РР»Рё РІРѕРѕР±С‰Рµ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅР°СЏ С„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅРѕСЃС‚СЊ
 */
 #pragma hdrstop
 
@@ -14,7 +14,7 @@
 TForm1 *Form1;
 class InheritantSheet* sheet=NULL;
 
-bool IsInt(String s){ //true - если s состоит только из цифр и возможно '-' первым символом
+bool IsInt(String s){ //true - РµСЃР»Рё s СЃРѕСЃС‚РѕРёС‚ С‚РѕР»СЊРєРѕ РёР· С†РёС„СЂ Рё РІРѕР·РјРѕР¶РЅРѕ '-' РїРµСЂРІС‹Рј СЃРёРјРІРѕР»РѕРј
 	if(!s.Length()){
 		return false;
 	}
@@ -29,7 +29,7 @@ bool IsInt(String s){ //true - если s состоит только из цифр и возможно '-' перв
 	}
 	return true;
 }
-void ShowSheet(){   //выводит всю таблицу в мемо1
+void ShowSheet(){   //РІС‹РІРѕРґРёС‚ РІСЃСЋ С‚Р°Р±Р»РёС†Сѓ РІ РјРµРјРѕ1
 	Form1->Memo1->Lines->Clear();
 	if(sheet){
 		for(int i=0; i<sheet->GetLinesAmount();i++){
@@ -42,53 +42,53 @@ void ShowSheet(){   //выводит всю таблицу в мемо1
 __fastcall TForm1::TForm1(TComponent* Owner)
 	: TForm(Owner)
 {
-	StringGrid1->Cells[0][0]="Ключи";
-	StringGrid1->Cells[1][0]="Значения";
+	StringGrid1->Cells[0][0]="РљР»СЋС‡Рё";
+	StringGrid1->Cells[1][0]="Р—РЅР°С‡РµРЅРёСЏ";
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::Button1Click(TObject *Sender) //Заполнить
+void __fastcall TForm1::Button1Click(TObject *Sender) //Р—Р°РїРѕР»РЅРёС‚СЊ
 {
-	int amount=1; //кол-во элементов
+	int amount=1; //РєРѕР»-РІРѕ СЌР»РµРјРµРЅС‚РѕРІ
 	while(IsInt(StringGrid1->Cells[0][amount])&&amount<100){
 		amount++;
 	}
 	amount--;
-	if(!amount){  //если нечем заполнять
+	if(!amount){  //РµСЃР»Рё РЅРµС‡РµРј Р·Р°РїРѕР»РЅСЏС‚СЊ
 		ShowSheet();
 		return;
 	}
-	if(sheet){  //удаляет старую таблицу
+	if(sheet){  //СѓРґР°Р»СЏРµС‚ СЃС‚Р°СЂСѓСЋ С‚Р°Р±Р»РёС†Сѓ
 		sheet->~InheritantSheet();
 	}
-	sheet=new InheritantSheet(amount); //кол-во адресов=ков-ву элементов, это делает работу
-	for(int i=1; i<=amount; i++){      //с таблицей более наглядной
+	sheet=new InheritantSheet(amount); //РєРѕР»-РІРѕ Р°РґСЂРµСЃРѕРІ=РєРѕРІ-РІСѓ СЌР»РµРјРµРЅС‚РѕРІ, СЌС‚Рѕ РґРµР»Р°РµС‚ СЂР°Р±РѕС‚Сѓ
+	for(int i=1; i<=amount; i++){      //СЃ С‚Р°Р±Р»РёС†РµР№ Р±РѕР»РµРµ РЅР°РіР»СЏРґРЅРѕР№
 		sheet->Add(StringGrid1->Cells[0][i].ToInt(),StringGrid1->Cells[1][i]);
 	}
 	ShowSheet();
 	return;
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::Button3Click(TObject *Sender) //Добавить
+void __fastcall TForm1::Button3Click(TObject *Sender) //Р”РѕР±Р°РІРёС‚СЊ
 {
 	if(IsInt(Edit1->Text)){
-		if(!sheet){ //если таблицы ещё нет, то создадим таблицу с 29 адресами
-			sheet=new InheritantSheet(29);//29-простое число, и потому слуяайные ключи
-		}                                 //прекрасно распределятся по таблице
+		if(!sheet){ //РµСЃР»Рё С‚Р°Р±Р»РёС†С‹ РµС‰С‘ РЅРµС‚, С‚Рѕ СЃРѕР·РґР°РґРёРј С‚Р°Р±Р»РёС†Сѓ СЃ 29 Р°РґСЂРµСЃР°РјРё
+			sheet=new InheritantSheet(29);//29-РїСЂРѕСЃС‚РѕРµ С‡РёСЃР»Рѕ, Рё РїРѕС‚РѕРјСѓ СЃР»СѓСЏР°Р№РЅС‹Рµ РєР»СЋС‡Рё
+		}                                 //РїСЂРµРєСЂР°СЃРЅРѕ СЂР°СЃРїСЂРµРґРµР»СЏС‚СЃСЏ РїРѕ С‚Р°Р±Р»РёС†Рµ
 		sheet->Add(Edit1->Text.ToInt(),Edit2->Text);
 	}else{
-		ShowMessage("Введите целый ключ");
+		ShowMessage("Р’РІРµРґРёС‚Рµ С†РµР»С‹Р№ РєР»СЋС‡");
 	}
 	ShowSheet();
 	return;
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::Button2Click(TObject *Sender)//Удалить
+void __fastcall TForm1::Button2Click(TObject *Sender)//РЈРґР°Р»РёС‚СЊ
 {
 	if(IsInt(Edit1->Text)){
 		if(sheet){
 			sheet->DeleteKey(Edit1->Text.ToInt());
 		}else{
-			ShowMessage("Таблица пуста");
+			ShowMessage("РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°");
 			return;
         }
 		if(!sheet->GetAmountTotal()){
@@ -96,56 +96,56 @@ void __fastcall TForm1::Button2Click(TObject *Sender)//Удалить
 			sheet=NULL;
 		}
 	}else{
-		ShowMessage("Введите целый ключ");
+		ShowMessage("Р’РІРµРґРёС‚Рµ С†РµР»С‹Р№ РєР»СЋС‡");
 	}
 	ShowSheet();
 	return;
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::Button4Click(TObject *Sender) //Найти
+void __fastcall TForm1::Button4Click(TObject *Sender) //РќР°Р№С‚Рё
 {
 	if(IsInt(Edit1->Text)){
 		if(sheet){
 			String* temp=sheet->FindKey(Edit1->Text.ToInt());
-			if(temp){ //может вернуться NULL, если ключ не найден
+			if(temp){ //РјРѕР¶РµС‚ РІРµСЂРЅСѓС‚СЊСЃСЏ NULL, РµСЃР»Рё РєР»СЋС‡ РЅРµ РЅР°Р№РґРµРЅ
 				Memo1->Lines->Clear();
-				Memo1->Lines->Add("Ключ:");
+				Memo1->Lines->Add("РљР»СЋС‡:");
 				Memo1->Lines->Add(Edit1->Text);
-				Memo1->Lines->Add("Значение:");
-				Memo1->Lines->Add(*temp);//здесь используется указатель, на поле элемента таблицы,
-			}else{                       //которое будет освобождено позже
+				Memo1->Lines->Add("Р—РЅР°С‡РµРЅРёРµ:");
+				Memo1->Lines->Add(*temp);//Р·РґРµСЃСЊ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ СѓРєР°Р·Р°С‚РµР»СЊ, РЅР° РїРѕР»Рµ СЌР»РµРјРµРЅС‚Р° С‚Р°Р±Р»РёС†С‹,
+			}else{                       //РєРѕС‚РѕСЂРѕРµ Р±СѓРґРµС‚ РѕСЃРІРѕР±РѕР¶РґРµРЅРѕ РїРѕР·Р¶Рµ
 				Memo1->Lines->Clear();
-				Memo1->Lines->Add("Ключ не найден");
+				Memo1->Lines->Add("РљР»СЋС‡ РЅРµ РЅР°Р№РґРµРЅ");
             }
 		}else{
-			ShowMessage("Таблица пуста");
+			ShowMessage("РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°");
         }
 	}else{
-		ShowMessage("Введите целый ключ");
+		ShowMessage("Р’РІРµРґРёС‚Рµ С†РµР»С‹Р№ РєР»СЋС‡");
 	}
 	return;
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::Button5Click(TObject *Sender)//ключи <= среднего
+void __fastcall TForm1::Button5Click(TObject *Sender)//РєР»СЋС‡Рё <= СЃСЂРµРґРЅРµРіРѕ
 {
 	if(sheet){
 		if(!sheet->GetAmountTotal()){
-			ShowMessage("Таблица пуста");
+			ShowMessage("РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°");
 		}else{
 			double average=sheet->Average();
 			Memo1->Lines->Clear();
-			Memo1->Lines->Add("Среднее арифметическое по ключам:");
-			Memo1->Lines->Add(FloatToStr(FLOOR(average))); //округление макросом до 4 цифры после ,
-			Memo1->Lines->Add("Количество элементов с ключами меньше среднего либо равных ему:");
+			Memo1->Lines->Add("РЎСЂРµРґРЅРµРµ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРµ РїРѕ РєР»СЋС‡Р°Рј:");
+			Memo1->Lines->Add(FloatToStr(FLOOR(average))); //РѕРєСЂСѓРіР»РµРЅРёРµ РјР°РєСЂРѕСЃРѕРј РґРѕ 4 С†РёС„СЂС‹ РїРѕСЃР»Рµ ,
+			Memo1->Lines->Add("РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ СЃ РєР»СЋС‡Р°РјРё РјРµРЅСЊС€Рµ СЃСЂРµРґРЅРµРіРѕ Р»РёР±Рѕ СЂР°РІРЅС‹С… РµРјСѓ:");
 			Memo1->Lines->Add(IntToStr(sheet->LessThanOrEqual(average)));
         }
 	}else{
-		ShowMessage("Таблица пуста");
+		ShowMessage("РўР°Р±Р»РёС†Р° РїСѓСЃС‚Р°");
 	}
 	return;
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::Button7Click(TObject *Sender)//Выход
+void __fastcall TForm1::Button7Click(TObject *Sender)//Р’С‹С…РѕРґ
 {
 	if(sheet){
 		sheet->~InheritantSheet();
@@ -153,9 +153,9 @@ void __fastcall TForm1::Button7Click(TObject *Sender)//Выход
 	Close();
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm1::Button6Click(TObject *Sender)//Показать таблицу
+void __fastcall TForm1::Button6Click(TObject *Sender)//РџРѕРєР°Р·Р°С‚СЊ С‚Р°Р±Р»РёС†Сѓ
 {
-	ShowSheet();//именно эта функция показывает таблицу, и её тело могло бы быть здесь
-	return;     //но ShowSheet() >>>> Button6Click(Sender)
-}               //или даже       >>>> ButtonShowSheetClick(Sender)
+	ShowSheet();//РёРјРµРЅРЅРѕ СЌС‚Р° С„СѓРЅРєС†РёСЏ РїРѕРєР°Р·С‹РІР°РµС‚ С‚Р°Р±Р»РёС†Сѓ, Рё РµС‘ С‚РµР»Рѕ РјРѕРіР»Рѕ Р±С‹ Р±С‹С‚СЊ Р·РґРµСЃСЊ
+	return;     //РЅРѕ ShowSheet() >>>> Button6Click(Sender)
+}               //РёР»Рё РґР°Р¶Рµ       >>>> ButtonShowSheetClick(Sender)
 //---------------------------------------------------------------------------
