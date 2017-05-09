@@ -1,5 +1,5 @@
 #include "BaseSheet.h"
-#define ABS(a) (a>=0)?(a):(-(a))  //модуль числа без include<math>
+#define ABS(a) (a>=0)?(a):(-(a))  //РјРѕРґСѓР»СЊ С‡РёСЃР»Р° Р±РµР· include<math>
 
 	BaseSheet::BaseSheet(int Amount){
 		amount=Amount;
@@ -16,14 +16,14 @@
 	}
 
 	void BaseSheet::Add(int key, String data){
-		stacks[ABS(key%amount)].Add(key,data);//здесь остаток от деления бывает отрицательным
+		stacks[ABS(key%amount)].Add(key,data);//Р·РґРµСЃСЊ РѕСЃС‚Р°С‚РѕРє РѕС‚ РґРµР»РµРЅРёСЏ Р±С‹РІР°РµС‚ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј
 		return;
 	}
 
 	String* BaseSheet::FindKey(int key){
 		struct Item* temp=stacks[ABS(key%amount)].FindKey(key);
 		if(temp){
-			return &(temp->data); //т.к. возвращаем указатель
+			return &(temp->data); //С‚.Рє. РІРѕР·РІСЂР°С‰Р°РµРј СѓРєР°Р·Р°С‚РµР»СЊ
 		}else{
 			return NULL;
 		}
@@ -34,10 +34,11 @@
 		return;
 	}
 
-	String BaseSheet::ShowNum(int num){//получаем хэш-адрес: кл1-зн1, кл2-зн2, кл3-зн3 ...
+	String BaseSheet::ShowNum(int num){//РїРѕР»СѓС‡Р°РµРј С…СЌС€-Р°РґСЂРµСЃ: РєР»1-Р·РЅ1, РєР»2-Р·РЅ2, РєР»3-Р·РЅ3 ...
 		return (IntToStr(num)+": "+stacks[num].Show());
 	}
 
 	int BaseSheet::GetLinesAmount(){
 		return amount;
 	}
+
