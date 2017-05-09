@@ -6,9 +6,9 @@
 class InheritantSheet:public BaseSheet{
 	public:
 	InheritantSheet(int amount):BaseSheet(amount){}
-	double Average(); //среднее по всем ключам таблицы
-	int GetAmountTotal(); //возвращает колво элементов в таблице
-	int LessThanOrEqual(double average);//возвращает кол-во ключей <=average во всей таблице
+	double Average(); //СЃСЂРµРґРЅРµРµ РїРѕ РІСЃРµРј РєР»СЋС‡Р°Рј С‚Р°Р±Р»РёС†С‹
+	int GetAmountTotal(); //РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ С‚Р°Р±Р»РёС†Рµ
+	int LessThanOrEqual(double average);//РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»-РІРѕ РєР»СЋС‡РµР№ <=average РІРѕ РІСЃРµР№ С‚Р°Р±Р»РёС†Рµ
 };
 
 #endif
