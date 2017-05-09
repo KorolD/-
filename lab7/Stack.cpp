@@ -9,7 +9,7 @@
 		if(!stack_ptr){
 			return;
 		}
-		struct Item* temp=stack_ptr;  //темп нужен т.к. стэк однонаправленный
+		struct Item* temp=stack_ptr;  //С‚РµРјРї РЅСѓР¶РµРЅ С‚.Рє. СЃС‚СЌРє РѕРґРЅРѕРЅР°РїСЂР°РІР»РµРЅРЅС‹Р№
 		while(stack_ptr){
 			stack_ptr=stack_ptr->next;
 			delete temp;
@@ -35,15 +35,15 @@
 			}
 			temp=temp->next;
 		}
-		return temp;   //если не находит ключ возвращает NULL
+		return temp;   //РµСЃР»Рё РЅРµ РЅР°С…РѕРґРёС‚ РєР»СЋС‡ РІРѕР·РІСЂР°С‰Р°РµС‚ NULL
 	}
 
 	void ItemStack::DeleteKey(int key){
 		if(!stack_ptr){
 			return;
 		}
-		if(key==stack_ptr->key){ //это можно проверить ниже в while
-			struct Item *temp=stack_ptr; //но тогда этот while не будет таким же понятным и простым
+		if(key==stack_ptr->key){ //СЌС‚Рѕ РјРѕР¶РЅРѕ РїСЂРѕРІРµСЂРёС‚СЊ РЅРёР¶Рµ РІ while
+			struct Item *temp=stack_ptr; //РЅРѕ С‚РѕРіРґР° СЌС‚РѕС‚ while РЅРµ Р±СѓРґРµС‚ С‚Р°РєРёРј Р¶Рµ РїРѕРЅСЏС‚РЅС‹Рј Рё РїСЂРѕСЃС‚С‹Рј
 			stack_ptr=stack_ptr->next;
 			delete temp;
 			return;
@@ -62,14 +62,14 @@
 	}
 
 	void ItemStack::Add(int key, String data){
-		if(!stack_ptr){    //если стэк пуст, создаём его
+		if(!stack_ptr){    //РµСЃР»Рё СЃС‚СЌРє РїСѓСЃС‚, СЃРѕР·РґР°С‘Рј РµРіРѕ
 			stack_ptr=new struct Item;
 			stack_ptr->key=key;
 			stack_ptr->data=data;
 			stack_ptr->next=NULL;
 			return;
 		}
-		struct Item* temp=new struct Item;//иначе, добавляем элемент в начало
+		struct Item* temp=new struct Item;//РёРЅР°С‡Рµ, РґРѕР±Р°РІР»СЏРµРј СЌР»РµРјРµРЅС‚ РІ РЅР°С‡Р°Р»Рѕ
 		temp->next=stack_ptr;
 		temp->key=key;
 		temp->data=data;
@@ -84,7 +84,7 @@
 			out+=IntToStr(temp->key)+"-"+temp->data+", ";
 			temp=temp->next;
 		}
-		out.SetLength(out.Length()-2); //обрезаем 2 последних символа ", "
+		out.SetLength(out.Length()-2); //РѕР±СЂРµР·Р°РµРј 2 РїРѕСЃР»РµРґРЅРёС… СЃРёРјРІРѕР»Р° ", "
 		return out;
 	}
 
