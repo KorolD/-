@@ -18,9 +18,10 @@
 	}
 
 	int InheritantSheet::LessThanOrEqual(double average){
-		int k=0; //счётчик подходящих элементов
+		int k=0; //СЃС‡С‘С‚С‡РёРє РїРѕРґС…РѕРґСЏС‰РёС… СЌР»РµРјРµРЅС‚РѕРІ
 		for(int i=0; i<amount; i++){
 			k+=stacks[i].LessThanOrEq(average);
 		}
 		return k;
 	}
+
