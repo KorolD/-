@@ -1,5 +1,5 @@
 #include "BaseSheet.h"
-#define ABS(a) (a >= 0)?(a):(-(a))  //модуль числа без include<math>
+#define ABS(a) (a >= 0) ? (a) : (-(a))  //модуль числа без include<math>
 
 	BaseSheet::BaseSheet(int Amount){
 		amount = Amount;
@@ -8,7 +8,7 @@
 	}
 
 	BaseSheet::~BaseSheet(){
-		for(int i = 0; i < amount; i++){
+		for (int i = 0; i < amount; i++) {
 			stacks[i].~ItemStack();
 		}
 		delete stacks;
@@ -22,7 +22,7 @@
 
 	String* BaseSheet::FindKey(int key){
 		struct Item* temp=stacks[ABS(key % amount)].FindKey(key);
-		if(temp){
+		if (temp) {
 			return &(temp -> data); //т.к. возвращаем указатель
 		}else{
 			return NULL;
@@ -41,4 +41,3 @@
 	int BaseSheet::GetLinesAmount(){
 		return amount;
 	}
-
