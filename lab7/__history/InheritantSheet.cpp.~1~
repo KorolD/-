@@ -1,0 +1,197 @@
+#include <vcl.h>
+#include <string.h>
+#define ERR "Ключ не найден"
+struct I{
+	struct I* next;
+	int k;
+	String s;
+};
+
+class L{
+	private:
+	struct I* i;
+	public:
+	L(){
+		i=NULL;
+		return;
+	}
+	~L(){
+		if(!i){
+			return;
+		}
+		struct I* temp=i;
+		while(i){
+			i=i->next;
+			delete temp;
+			temp=i;
+		}
+		delete temp;
+		return;
+	}
+	bool IsEmpty(){
+		if(i){
+			return true;
+		}else{
+			return false;
+        }
+	}
+	struct I* FindKey(int k){
+		struct I* t=i;
+		while(t){
+			if(t->k==k){
+				return t;
+			}
+			t=t->next;
+		}
+		return t;
+	}
+	void DeleteKey(int k){
+		if(k==i->k){
+			struct I* t=i;
+			i=i->next;
+			delete t;
+			return;
+		}
+		struct I *t0=i, *t=i->next;
+		while(t){
+			t0=t;
+			if(t->k==k){
+				t0->next=t->next;
+				delete t;
+				return;
+			}
+			t=t->next;
+		}
+		return;
+	}
+	void Add(int k, String s){
+		if(!i){
+			i=new struct I;
+			i->k=k;
+			i->s=s;
+			i->next=NULL;
+			return;
+		}
+		struct I* t=i;
+		while(t->next){
+			t=t->next;
+		}
+		t->next=new struct I;
+		t=t->next;
+		t->next=NULL;
+		t->k=k;
+		t->s=s;
+		return;
+	}
+	String Show(){
+		struct I* t=i;
+		String out="";
+		while(t){
+			out+=IntToStr(t->k)+"-"+t->s+", ";
+			t=t->next;
+		}
+		out.SetLength(out.Length()-2);
+		return out;
+	}
+	int GetNum(){
+		int n=0;
+		struct I* t=i;
+		while(t){
+			n++;
+			t=t->next;
+		}
+		return n;
+	}
+	double Srednee(){
+		int n=GetNum();
+		double d=0;
+		struct I* t=i;
+		while(t){
+			d+=double(t->k)/n;
+			t=t->next;
+		}
+		return d;
+	}
+	int LessThanOrEq(double d){
+		struct I* t=i;
+		int n=0;
+		while(t){
+			if(t->k<=d){
+				n++;
+			}
+			t=t->next;
+		}
+		return n;
+	}
+};
+
+class H{
+	protected:
+	int n;
+	class L* l;
+	public:
+	H(int N){
+		n=N;
+		l=new L[n];
+		return;
+	}
+	~H(){
+		for(int i=0; i<n; i++){
+			l[i].~L();
+		}
+		delete l;
+		return;
+	}
+	void Add(int k, String s){
+		l[k%n].Add(k,s);
+		return;
+	}
+	String FindKey(int k){
+		struct I* t= l[k%n].FindKey(k);
+		if(t){
+			return t->s;
+		}else{
+			return ERR;
+        }
+	}
+	void DeleteKey(int k){
+		l[k%n].DeleteKey(k);
+		return;
+	}
+	String ShowNum(int k){
+		return (IntToStr(k)+": "+l[k].Show());
+	}
+	int GetNum(){
+		return n;
+	}
+};
+
+class V:public H{
+	public:
+	V(int n):H(n){}
+	double Srednee(){
+		int num=0;
+		double d=0;
+		for(int i=0; i<n; i++){
+			num+=l[i].GetNum();
+		}
+		for(int i=0; i<n; i++){
+			d+=double(l[i].Srednee()*l[i].GetNum())/num;
+		}
+		return d;
+	}
+	int GetNumTotal(){
+		int num=0;
+		for(int i=0; i<n; i++){
+			num+=l[i].GetNum();
+		}
+		return num;
+	}
+	int LessThanOrEqual(double d){
+		int k=0;
+		for(int i=0; i<n; i++){
+			k+=l[i].LessThanOrEq(d);
+		}
+		return k;
+	}
+};
