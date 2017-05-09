@@ -11,10 +11,10 @@ class BaseSheet{
 	String* FindKey(int key);
 	void DeleteKey(int key);
 	String ShowNum(int num);
-	int GetLinesAmount();    //возвращает количество хэш-адресов
+	int GetLinesAmount();    //РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ С…СЌС€-Р°РґСЂРµСЃРѕРІ
 
 	protected:
-	int amount;    //количество хэш-адресов
+	int amount;    //РєРѕР»РёС‡РµСЃС‚РІРѕ С…СЌС€-Р°РґСЂРµСЃРѕРІ
 	class ItemStack* stacks;
 };
 
