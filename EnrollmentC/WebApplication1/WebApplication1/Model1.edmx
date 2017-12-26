@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище Enrollment_campaignModel" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="enrollees">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="surname" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="patronymic" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="email" Type="nchar" MaxLength="256" Nullable="false" />
+          <Property Name="passport" Type="nchar" MaxLength="20" />
+          <Property Name="country" Type="nvarchar" MaxLength="25" />
+          <Property Name="locality" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="address" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="password" Type="nchar" MaxLength="255" Nullable="false" />
+          <Property Name="birthdate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="exams_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subject" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="exams_results">
+          <Key>
+            <PropertyRef Name="enrollee_ID" />
+            <PropertyRef Name="exams_enum_ID" />
+          </Key>
+          <Property Name="enrollee_ID" Type="int" Nullable="false" />
+          <Property Name="exams_enum_ID" Type="smallint" Nullable="false" />
+          <Property Name="result" Type="smallint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_exams_results_Enrollees">
+          <End Role="enrollees" Type="Self.enrollees" Multiplicity="1" />
+          <End Role="exams_results" Type="Self.exams_results" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="enrollees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="exams_results">
+              <PropertyRef Name="enrollee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_exams_results_exams_enum">
+          <End Role="exams_enum" Type="Self.exams_enum" Multiplicity="1" />
+          <End Role="exams_results" Type="Self.exams_results" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="exams_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="exams_results">
+              <PropertyRef Name="exams_enum_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище Enrollment_campaignModelContainer">
+          <EntitySet Name="enrollees" EntityType="Self.enrollees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="exams_enum" EntityType="Self.exams_enum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="exams_results" EntityType="Self.exams_results" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_exams_results_Enrollees" Association="Self.FK_exams_results_Enrollees">
+            <End Role="enrollees" EntitySet="enrollees" />
+            <End Role="exams_results" EntitySet="exams_results" />
+          </AssociationSet>
+          <AssociationSet Name="FK_exams_results_exams_enum" Association="Self.FK_exams_results_exams_enum">
+            <End Role="exams_enum" EntitySet="exams_enum" />
+            <End Role="exams_results" EntitySet="exams_results" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Enrollment_campaignModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="enrollees">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="surname" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="patronymic" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="256" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="passport" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="country" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="locality" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="birthdate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="exams_results" Relationship="Self.FK_exams_results_Enrollees" FromRole="enrollees" ToRole="exams_results" />
+        </EntityType>
+        <EntityType Name="exams_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subject" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="exams_results" Relationship="Self.FK_exams_results_exams_enum" FromRole="exams_enum" ToRole="exams_results" />
+        </EntityType>
+        <EntityType Name="exams_results">
+          <Key>
+            <PropertyRef Name="enrollee_ID" />
+            <PropertyRef Name="exams_enum_ID" />
+          </Key>
+          <Property Name="enrollee_ID" Type="Int32" Nullable="false" />
+          <Property Name="exams_enum_ID" Type="Int16" Nullable="false" />
+          <Property Name="result" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="enrollees" Relationship="Self.FK_exams_results_Enrollees" FromRole="exams_results" ToRole="enrollees" />
+          <NavigationProperty Name="exams_enum" Relationship="Self.FK_exams_results_exams_enum" FromRole="exams_results" ToRole="exams_enum" />
+        </EntityType>
+        <Association Name="FK_exams_results_Enrollees">
+          <End Role="enrollees" Type="Self.enrollees" Multiplicity="1" />
+          <End Role="exams_results" Type="Self.exams_results" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="enrollees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="exams_results">
+              <PropertyRef Name="enrollee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_exams_results_exams_enum">
+          <End Role="exams_enum" Type="Self.exams_enum" Multiplicity="1" />
+          <End Role="exams_results" Type="Self.exams_results" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="exams_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="exams_results">
+              <PropertyRef Name="exams_enum_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Enrollment_campaignEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="enrollees" EntityType="Self.enrollees" />
+          <EntitySet Name="exams_enum" EntityType="Self.exams_enum" />
+          <EntitySet Name="exams_results" EntityType="Self.exams_results" />
+          <AssociationSet Name="FK_exams_results_Enrollees" Association="Self.FK_exams_results_Enrollees">
+            <End Role="enrollees" EntitySet="enrollees" />
+            <End Role="exams_results" EntitySet="exams_results" />
+          </AssociationSet>
+          <AssociationSet Name="FK_exams_results_exams_enum" Association="Self.FK_exams_results_exams_enum">
+            <End Role="exams_enum" EntitySet="exams_enum" />
+            <End Role="exams_results" EntitySet="exams_results" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище Enrollment_campaignModelContainer" CdmEntityContainer="Enrollment_campaignEntities">
+          <EntitySetMapping Name="enrollees">
+            <EntityTypeMapping TypeName="Enrollment_campaignModel.enrollees">
+              <MappingFragment StoreEntitySet="enrollees">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="patronymic" ColumnName="patronymic" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="passport" ColumnName="passport" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="locality" ColumnName="locality" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="birthdate" ColumnName="birthdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="exams_enum">
+            <EntityTypeMapping TypeName="Enrollment_campaignModel.exams_enum">
+              <MappingFragment StoreEntitySet="exams_enum">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="exams_results">
+            <EntityTypeMapping TypeName="Enrollment_campaignModel.exams_results">
+              <MappingFragment StoreEntitySet="exams_results">
+                <ScalarProperty Name="enrollee_ID" ColumnName="enrollee_ID" />
+                <ScalarProperty Name="exams_enum_ID" ColumnName="exams_enum_ID" />
+                <ScalarProperty Name="result" ColumnName="result" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

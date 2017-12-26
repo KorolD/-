@@ -1,0 +1,21 @@
+﻿@{
+    Layout = null;
+}
+
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Home</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap-theme.css" />
+</head>
+<body>
+    @using (Html.BeginForm("Login", "Home", FormMethod.Get))
+    {
+        <input class="btn-success" value="Login" type="submit" />
+    }
+    @using (Html.BeginForm("Register", "Home", FormMethod.Get))
+    {
+        <input class="btn-success" value="Register" type="submit" />
+    }
+</body>
