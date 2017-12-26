@@ -1,6 +1,6 @@
 TODO.txt
 LOG/
-**/packages/
+**/packages/**/
 packages/
 bin/
-**/bin/
+**/bin/**/
