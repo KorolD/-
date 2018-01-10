@@ -1,0 +1,36 @@
+﻿@model IEnumerable<enrollee>
+@{
+    ViewBag.Title = "Index";
+}
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="container">
+        <h2>Enrollees</h2>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr><th>Name</th><th>Surname</th><th>Patronymic</th><th>ctrl</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var e in Model)
+                {
+                    <tr>
+                        <th>@e.name</th>
+                        <th>@e.surname</th>
+                        <th>@e.patronymic</th>
+                        <th>
+                            @Html.ActionLink("More info", "Personal", new { e.ID }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Edit", "Edit", new {e.ID}, new { @class = "btn btn-primary" })
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="btn-group">
+            @Html.ActionLink("Create", "Edit", new { ID=0 }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Tree", "Tree",null,new { @class="btn btn-primary"})
+        </div>
+    </div>
+</body>

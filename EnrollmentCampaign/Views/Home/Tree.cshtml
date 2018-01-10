@@ -1,0 +1,62 @@
+﻿@model Tree
+@{
+    ViewBag.Title = "Tree";
+}
+
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+</head>
+<body>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            @if (Model.descendant_amount > 0)
+            {
+            <button type="button" id="@Model.ID.ToString()" class="btn btn-default" loaded="false" onclick="GetDescendants(this)">
+                +
+            </button>
+                @: @string.Join(" ", Model.value, "(", Model.descendant_amount, ")")
+            }
+            else
+            {
+                @: @Model.value
+            }
+        </div>
+        <div class="panel-body" id="@string.Join("",Model.ID.ToString(),"b")" hidden="hidden">
+        </div>
+    </div>
+
+
+</body>
+
+<script>
+    function GetDescendants(e) {
+        if ($(e).attr('loaded') == 'true') {
+            $('#' + e.id + 'b').removeAttr('hidden');
+        } else {
+            $.ajax({
+                url: '@Url.Action("GetDescendants")' + '?id=' + e.id,
+                type: 'GET',
+                success: function (data) {
+                    $('#' + e.id + 'b').html(data);
+                    $('#' + e.id + 'b').removeAttr('hidden');
+                    $(e).attr('loaded', 'true')
+                }
+            });
+        }
+        $(e).html('-');
+        $(e).attr('onclick', 'HideDescendants(this)');
+    }
+</script>
+<script>
+    function HideDescendants(e) {
+        var btnfunc = function (b) { $(b).html('+'); $(b).attr('onclick', 'GetDescendants(this)'); };
+        btnfunc(e);
+        btnfunc($('#' + e.id + 'b').find('button'));
+        $('#' + e.id + 'b').find('.panel-body').attr('hidden', 'hidden');
+        $('#' + e.id + 'b').attr('hidden', 'hidden');
+    }
+</script>

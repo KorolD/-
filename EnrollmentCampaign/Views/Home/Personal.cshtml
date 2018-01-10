@@ -1,0 +1,57 @@
+﻿@model enrollee
+@{
+    ViewBag.Title = "Personal";
+}
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="panel panel-primary">
+        <div class="panel-heading">@Model.surname @Model.name</div>
+        <div class="panel-body">
+            <div class="btn-group">
+                @Html.ActionLink("Edit", "Edit", new { Model.ID }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Main", "Index", null, new { @class = "btn btn-primary" })
+            </div>
+            <dl>
+                <dt>Name:</dt>
+                <dd>@Model.name</dd>
+                <dt>Surname:</dt>
+                <dd>@Model.surname</dd>
+                <dt>Patronymic:</dt>
+                <dd>@Model.patronymic</dd>
+                <dt>Birthdate:</dt>
+                <dd>@Model.GetBirthdate()</dd>
+                <dt>Passport:</dt>
+                <dd>@Model.passport</dd>
+                <dt>Country:</dt>
+                <dd>@Model.GetCountry().name</dd>
+                <dt>Town:</dt>
+                <dd>@Model.GetTownName()</dd>
+                <dt>Street:</dt>
+                <dd>@Model.street</dd>
+                <dt>House:</dt>
+                <dd>@Model.house</dd>
+                @if (Model.block != null)
+                {
+                    <dt>Block:</dt>
+                    <dd>@Model.block</dd>
+                }
+                @if (Model.apartment != null)
+                {
+                    <dt>Apartment:</dt>
+                    <dd>@Model.apartment</dd>
+                }
+                <dt>CT:</dt>
+                @foreach (var r in Model.results.AllExistingCT)
+                {
+                    <dd>@r.result - @r.GetCT().name</dd>
+                }
+                <dt>Speciality:</dt>
+                <dd>@Model.GetSpeciality(1).GetFullName()</dd>
+            </dl>
+        </div>
+    </div>
+</body>
+

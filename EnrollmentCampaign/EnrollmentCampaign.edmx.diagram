@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e89180e3f47f4ad6a67f1268b7bbe78a" Name="Diagram1">
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.countries_enum" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.CT_enum" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.CT_results" Width="1.5" PointX="7.5" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.enrollee" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.faculty_enum" Width="1.5" PointX="6" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.parent" Width="1.5" PointX="7.5" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.specialty_enum" Width="1.5" PointX="8.25" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.specialty_priorities" Width="1.5" PointX="10.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.towns_enum" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.Tree" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <AssociationConnector Association="EnrollmentCampaignModel.FK_towns_enum_countries_enum" ManuallyRouted="false" />
+        <AssociationConnector Association="EnrollmentCampaignModel.FK_CT_results_CT_enum" ManuallyRouted="false" />
+        <AssociationConnector Association="EnrollmentCampaignModel.FK_CT_results_enrollees" ManuallyRouted="false" />
+        <AssociationConnector Association="EnrollmentCampaignModel.FK_enrollees_towns_enum" ManuallyRouted="false" />
+        <AssociationConnector Association="EnrollmentCampaignModel.FK_parents_enrollees" ManuallyRouted="false" />
+        <AssociationConnector Association="EnrollmentCampaignModel.FK_specialty_priorities_enrollees" ManuallyRouted="false" />
+        <AssociationConnector Association="EnrollmentCampaignModel.FK_specialty_enum_faculty_enum" ManuallyRouted="false" />
+        <AssociationConnector Association="EnrollmentCampaignModel.FK_specialty_priorities_specialty_enum" ManuallyRouted="false" />
+        <AssociationConnector Association="EnrollmentCampaignModel.FK_Tree_Tree" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EnrollmentCampaignModel.writing_locker" Width="1.5" PointX="3.25" PointY="1.875" />
+        <AssociationConnector Association="EnrollmentCampaignModel.FK_writing_locker_enrollees" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

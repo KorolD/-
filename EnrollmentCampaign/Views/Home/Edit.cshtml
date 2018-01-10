@@ -1,0 +1,119 @@
+﻿@model enrollee
+@{
+    ViewBag.Title = "Edit";
+}
+
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+</head>
+<body>
+    <form id="mainF" method="post">
+        <input type="hidden" name="ID" value="@Model.ID" />
+        <input type="hidden" name="begin_time" value="@Model.writing_locker.begin_time"/>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Edit @Model.surname @Model.name</div>
+            <div class="panel-body">
+
+                @if (ViewBag.validationfail!=null)
+                {
+                    @Html.ValidationSummary();
+                }
+
+                <div class="form-group"><label>Name:</label>@Html.TextBoxFor(e => e.name, new { @class = "form-control" })</div>
+                <div class="form-group"><label>Surname:</label>@Html.TextBoxFor(e => e.surname, new { @class = "form-control" })</div>
+                <div class="form-group"><label>Patronymic:</label>@Html.TextBoxFor(e => e.patronymic, new { @class = "form-control" })</div>
+                <div class="form-group"><label>Birthdate:</label><input class="form-control" min="@DateTime.Today.AddYears(-100).GetDateTimeFormats()[42].Substring(0,10)" max="@DateTime.Today.GetDateTimeFormats()[42].Substring(0,10)" type="date" value=@Model.GetBirthdateEdit() name="birthdate" /></div>
+                <div class="form-group"><label>Passport:</label>@Html.TextBoxFor(e => e.passport, new { @class = "form-control" })</div>
+
+                <div class="form-group">
+                    <label>Country:</label>
+                    <select class="form-control" onchange="CountriesChanged(this)">
+                        @foreach (var c in countries_enum.countries_list)
+                        {
+                            <option value="@c.Value" @if (c.Value == Model.GetCountry().ID.ToString()) { <text> selected="selected" </text> }>@c.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Town:</label>
+                    @Html.DropDownListFor(e => e.town_ID, Model.GetCountry().towns_list, new { @class = "form-control", @id = "towns" })
+                </div>
+
+                <div class="form-group"><label>Street:</label>@Html.TextBoxFor(e => e.street, new { @class = "form-control" })</div>
+                <div class="form-group"><label>House:</label>@Html.TextBoxFor(e => e.house, new { @class = "form-control" })</div>
+                <div class="form-group"><label>Block:</label>@Html.TextBoxFor(e => e.block, new { @class = "form-control" })</div>
+                <div class="form-group"><label>Apartment:</label>@Html.TextBoxFor(e => e.apartment, new { @class = "form-control" })</div>
+
+                <div class="form-group">
+                    <label>CT:</label>
+                    @for (int i = 0; i < CT_results_list.MAX_CT; i++)
+                    {
+                        //@Html.DropDownList("CT_ID"+i.ToString(),CT_results_list.CT_list, new { @class = "form-control" })
+                        <select class="form-control" name="@string.Join("", "CT_ID", i.ToString())">
+                            @foreach (var c in CT_results_list.CT_list)
+                            {
+                                <option value="@c.Value" @if (c.Value == Model.results.EditableCT[i].CT_ID.ToString()) { <text> selected="selected" </text> }>
+                                    @c.Text
+                                </option>
+                            }
+                        </select><input class="form-control" name="@string.Join("","CT_res",i.ToString())" type="number" max="100" min="15" value="@Model.results.EditableCT[i].result">
+                        //@Html.TextBox("CT_res"+i.ToString(),Model.results.AllExistingCT[i].result, new { @class = "form-control" })
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label>Faculty:</label>
+                    <select class="form-control" onchange="FacultyChanged(this)">
+                        @foreach (var f in faculty_enum.faculty_list)
+                        {
+                            <option value="@f.Value" @if (f.Value == Model.GetSpeciality(1).faculty_ID.ToString()) { <text> selected="selected" </text> }>@f.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Speciality:</label>
+                    @*@Html.DropDownList("speciality",Model.GetSpeciality(1).GetFaculty().speciality_list,new { @class="form-control",@id="specialities"})*@
+                    <select class="form-control" id="specialities" name="speciality">
+                        @foreach (var s in Model.GetSpeciality(1).GetFaculty().speciality_list)
+                        {
+                            <option value="@s.Value" @if (s.Value == Model.GetSpeciality(1).ID.ToString()) { <text> selected="selected" </text> }>@s.Text</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="container">
+    <div class="btn-group">
+        <input type="submit" form="mainF" value="Save" class="btn btn-primary" />
+        @Html.ActionLink("Main", "IndexFromLock", Model.writing_locker, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Delete","Delete", Model.writing_locker, new { @class ="btn btn-danger", @onclick="return confirm('Delete?')"})
+        
+    </div>
+        </div>
+    <script>
+            function CountriesChanged(e) {
+                $.ajax({
+                    url: '@Url.Action("GetTowns")'+'?country_id=' + e.value,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#towns').html(data);
+                    }
+                });
+            }
+    </script>
+    <script>
+            function FacultyChanged(e) {
+                $.ajax({
+                    url: '@Url.Action("GetSpecialities")'+'?faculty_id=' + e.value,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#towns').html(data);
+                    }
+                });
+            }
+    </script>
+</body>

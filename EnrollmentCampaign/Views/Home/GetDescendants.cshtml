@@ -1,0 +1,26 @@
+﻿@model (IEnumerable<Tree> desc, int id)
+
+
+
+    @foreach(var d in Model.desc)
+    {
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                @if (d.descendant_amount > 0)
+                {
+                <button type="button" id="@d.ID.ToString()" loaded="false" class="btn btn-default" onclick="GetDescendants(this)">
+                    +
+                </button>
+                    @: @string.Join(" ", d.value, "(", d.descendant_amount, ")")
+                }
+                else
+                {
+                    @: @d.value
+                }
+            </div>
+            <div class="panel-body" id="@string.Join("",d.ID.ToString(),"b")" hidden="hidden">
+            </div>
+        </div>
+    }
+
+

@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EnrollmentCampaignModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="countries_enum">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="towns_enum" Relationship="Self.FK_towns_enum_countries_enum" FromRole="countries_enum" ToRole="towns_enum" />
+  </EntityType>
+  <EntityType Name="CT_enum">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CT_results" Relationship="Self.FK_CT_results_CT_enum" FromRole="CT_enum" ToRole="CT_results" />
+  </EntityType>
+  <EntityType Name="CT_results">
+    <Key>
+      <PropertyRef Name="enrollee_ID" />
+      <PropertyRef Name="CT_ID" />
+    </Key>
+    <Property Name="enrollee_ID" Type="Int32" Nullable="false" />
+    <Property Name="CT_ID" Type="Int32" Nullable="false" />
+    <Property Name="result" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="CT_enum" Relationship="Self.FK_CT_results_CT_enum" FromRole="CT_results" ToRole="CT_enum" />
+    <NavigationProperty Name="enrollee" Relationship="Self.FK_CT_results_enrollees" FromRole="CT_results" ToRole="enrollees" />
+  </EntityType>
+  <EntityType Name="enrollee">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="town_ID" Type="Int32" Nullable="false" />
+    <Property Name="street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="house" Type="Int16" Nullable="false" />
+    <Property Name="block" Type="Int16" />
+    <Property Name="apartment" Type="Int16" />
+    <Property Name="birthdate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="passport" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="CT_results" Relationship="Self.FK_CT_results_enrollees" FromRole="enrollees" ToRole="CT_results" />
+    <NavigationProperty Name="towns_enum" Relationship="Self.FK_enrollees_towns_enum" FromRole="enrollees" ToRole="towns_enum" />
+    <NavigationProperty Name="parent" Relationship="Self.FK_parents_enrollees" FromRole="enrollees" ToRole="parents" />
+    <NavigationProperty Name="specialty_priorities" Relationship="Self.FK_specialty_priorities_enrollees" FromRole="enrollees" ToRole="specialty_priorities" />
+  </EntityType>
+  <EntityType Name="faculty_enum">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="specialty_enum" Relationship="Self.FK_specialty_enum_faculty_enum" FromRole="faculty_enum" ToRole="specialty_enum" />
+  </EntityType>
+  <EntityType Name="parent">
+    <Key>
+      <PropertyRef Name="enrollee_ID" />
+    </Key>
+    <Property Name="enrollee_ID" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="birthdate" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="enrollee" Relationship="Self.FK_parents_enrollees" FromRole="parents" ToRole="enrollees" />
+  </EntityType>
+  <EntityType Name="specialty_enum">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="faculty_ID" Type="Int32" Nullable="false" />
+    <Property Name="admission" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="faculty_enum" Relationship="Self.FK_specialty_enum_faculty_enum" FromRole="specialty_enum" ToRole="faculty_enum" />
+    <NavigationProperty Name="specialty_priorities" Relationship="Self.FK_specialty_priorities_specialty_enum" FromRole="specialty_enum" ToRole="specialty_priorities" />
+  </EntityType>
+  <EntityType Name="specialty_priorities">
+    <Key>
+      <PropertyRef Name="enrollee_ID" />
+      <PropertyRef Name="specialty_ID" />
+    </Key>
+    <Property Name="enrollee_ID" Type="Int32" Nullable="false" />
+    <Property Name="specialty_ID" Type="Int32" Nullable="false" />
+    <Property Name="priority" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="enrollee" Relationship="Self.FK_specialty_priorities_enrollees" FromRole="specialty_priorities" ToRole="enrollees" />
+    <NavigationProperty Name="specialty_enum" Relationship="Self.FK_specialty_priorities_specialty_enum" FromRole="specialty_priorities" ToRole="specialty_enum" />
+  </EntityType>
+  <EntityType Name="towns_enum">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="country_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="countries_enum" Relationship="Self.FK_towns_enum_countries_enum" FromRole="towns_enum" ToRole="countries_enum" />
+    <NavigationProperty Name="enrollees" Relationship="Self.FK_enrollees_towns_enum" FromRole="towns_enum" ToRole="enrollees" />
+  </EntityType>
+  <Association Name="FK_towns_enum_countries_enum">
+    <End Role="countries_enum" Type="Self.countries_enum" Multiplicity="1" />
+    <End Role="towns_enum" Type="Self.towns_enum" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="countries_enum">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="towns_enum">
+        <PropertyRef Name="country_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CT_results_CT_enum">
+    <End Role="CT_enum" Type="Self.CT_enum" Multiplicity="1" />
+    <End Role="CT_results" Type="Self.CT_results" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CT_enum">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CT_results">
+        <PropertyRef Name="CT_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CT_results_enrollees">
+    <End Role="enrollees" Type="Self.enrollee" Multiplicity="1" />
+    <End Role="CT_results" Type="Self.CT_results" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="enrollees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CT_results">
+        <PropertyRef Name="enrollee_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_enrollees_towns_enum">
+    <End Role="towns_enum" Type="Self.towns_enum" Multiplicity="1" />
+    <End Role="enrollees" Type="Self.enrollee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="towns_enum">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="enrollees">
+        <PropertyRef Name="town_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_parents_enrollees">
+    <End Role="enrollees" Type="Self.enrollee" Multiplicity="1" />
+    <End Role="parents" Type="Self.parent" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="enrollees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="parents">
+        <PropertyRef Name="enrollee_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_specialty_priorities_enrollees">
+    <End Role="enrollees" Type="Self.enrollee" Multiplicity="1" />
+    <End Role="specialty_priorities" Type="Self.specialty_priorities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="enrollees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="specialty_priorities">
+        <PropertyRef Name="enrollee_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_specialty_enum_faculty_enum">
+    <End Role="faculty_enum" Type="Self.faculty_enum" Multiplicity="1" />
+    <End Role="specialty_enum" Type="Self.specialty_enum" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="faculty_enum">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="specialty_enum">
+        <PropertyRef Name="faculty_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_specialty_priorities_specialty_enum">
+    <End Role="specialty_enum" Type="Self.specialty_enum" Multiplicity="1" />
+    <End Role="specialty_priorities" Type="Self.specialty_priorities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="specialty_enum">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="specialty_priorities">
+        <PropertyRef Name="specialty_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EnrollmentCampaignEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="countries_enum" EntityType="Self.countries_enum" />
+    <EntitySet Name="CT_enum" EntityType="Self.CT_enum" />
+    <EntitySet Name="CT_results" EntityType="Self.CT_results" />
+    <EntitySet Name="enrollees" EntityType="Self.enrollee" />
+    <EntitySet Name="faculty_enum" EntityType="Self.faculty_enum" />
+    <EntitySet Name="parents" EntityType="Self.parent" />
+    <EntitySet Name="specialty_enum" EntityType="Self.specialty_enum" />
+    <EntitySet Name="specialty_priorities" EntityType="Self.specialty_priorities" />
+    <EntitySet Name="towns_enum" EntityType="Self.towns_enum" />
+    <AssociationSet Name="FK_towns_enum_countries_enum" Association="Self.FK_towns_enum_countries_enum">
+      <End Role="countries_enum" EntitySet="countries_enum" />
+      <End Role="towns_enum" EntitySet="towns_enum" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CT_results_CT_enum" Association="Self.FK_CT_results_CT_enum">
+      <End Role="CT_enum" EntitySet="CT_enum" />
+      <End Role="CT_results" EntitySet="CT_results" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CT_results_enrollees" Association="Self.FK_CT_results_enrollees">
+      <End Role="enrollees" EntitySet="enrollees" />
+      <End Role="CT_results" EntitySet="CT_results" />
+    </AssociationSet>
+    <AssociationSet Name="FK_enrollees_towns_enum" Association="Self.FK_enrollees_towns_enum">
+      <End Role="towns_enum" EntitySet="towns_enum" />
+      <End Role="enrollees" EntitySet="enrollees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_parents_enrollees" Association="Self.FK_parents_enrollees">
+      <End Role="enrollees" EntitySet="enrollees" />
+      <End Role="parents" EntitySet="parents" />
+    </AssociationSet>
+    <AssociationSet Name="FK_specialty_priorities_enrollees" Association="Self.FK_specialty_priorities_enrollees">
+      <End Role="enrollees" EntitySet="enrollees" />
+      <End Role="specialty_priorities" EntitySet="specialty_priorities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_specialty_enum_faculty_enum" Association="Self.FK_specialty_enum_faculty_enum">
+      <End Role="faculty_enum" EntitySet="faculty_enum" />
+      <End Role="specialty_enum" EntitySet="specialty_enum" />
+    </AssociationSet>
+    <AssociationSet Name="FK_specialty_priorities_specialty_enum" Association="Self.FK_specialty_priorities_specialty_enum">
+      <End Role="specialty_enum" EntitySet="specialty_enum" />
+      <End Role="specialty_priorities" EntitySet="specialty_priorities" />
+    </AssociationSet>
+    <EntitySet Name="Trees" EntityType="EnrollmentCampaignModel.Tree" />
+    <AssociationSet Name="FK_Tree_Tree" Association="EnrollmentCampaignModel.FK_Tree_Tree">
+      <End Role="Tree" EntitySet="Trees" />
+      <End Role="Tree1" EntitySet="Trees" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Tree">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="parent_ID" Type="Int32" Nullable="false" />
+    <Property Name="value" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Tree1" Relationship="EnrollmentCampaignModel.FK_Tree_Tree" FromRole="Tree" ToRole="Tree1" />
+    <NavigationProperty Name="Tree2" Relationship="EnrollmentCampaignModel.FK_Tree_Tree" FromRole="Tree1" ToRole="Tree" />
+  </EntityType>
+  <Association Name="FK_Tree_Tree">
+    <End Type="EnrollmentCampaignModel.Tree" Role="Tree" Multiplicity="1" />
+    <End Type="EnrollmentCampaignModel.Tree" Role="Tree1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tree">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Tree1">
+        <PropertyRef Name="parent_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище EnrollmentCampaignModelContainer" CdmEntityContainer="EnrollmentCampaignEntities">
+    <EntitySetMapping Name="countries_enum">
+      <EntityTypeMapping TypeName="EnrollmentCampaignModel.countries_enum">
+        <MappingFragment StoreEntitySet="countries_enum">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CT_enum">
+      <EntityTypeMapping TypeName="EnrollmentCampaignModel.CT_enum">
+        <MappingFragment StoreEntitySet="CT_enum">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CT_results">
+      <EntityTypeMapping TypeName="EnrollmentCampaignModel.CT_results">
+        <MappingFragment StoreEntitySet="CT_results">
+          <ScalarProperty Name="enrollee_ID" ColumnName="enrollee_ID" />
+          <ScalarProperty Name="CT_ID" ColumnName="CT_ID" />
+          <ScalarProperty Name="result" ColumnName="result" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="enrollees">
+      <EntityTypeMapping TypeName="EnrollmentCampaignModel.enrollee">
+        <MappingFragment StoreEntitySet="enrollees">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="surname" ColumnName="surname" />
+          <ScalarProperty Name="patronymic" ColumnName="patronymic" />
+          <ScalarProperty Name="town_ID" ColumnName="town_ID" />
+          <ScalarProperty Name="street" ColumnName="street" />
+          <ScalarProperty Name="house" ColumnName="house" />
+          <ScalarProperty Name="block" ColumnName="block" />
+          <ScalarProperty Name="apartment" ColumnName="apartment" />
+          <ScalarProperty Name="birthdate" ColumnName="birthdate" />
+          <ScalarProperty Name="passport" ColumnName="passport" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="faculty_enum">
+      <EntityTypeMapping TypeName="EnrollmentCampaignModel.faculty_enum">
+        <MappingFragment StoreEntitySet="faculty_enum">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="parents">
+      <EntityTypeMapping TypeName="EnrollmentCampaignModel.parent">
+        <MappingFragment StoreEntitySet="parents">
+          <ScalarProperty Name="enrollee_ID" ColumnName="enrollee_ID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="surname" ColumnName="surname" />
+          <ScalarProperty Name="patronymic" ColumnName="patronymic" />
+          <ScalarProperty Name="birthdate" ColumnName="birthdate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="specialty_enum">
+      <EntityTypeMapping TypeName="EnrollmentCampaignModel.specialty_enum">
+        <MappingFragment StoreEntitySet="specialty_enum">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="faculty_ID" ColumnName="faculty_ID" />
+          <ScalarProperty Name="admission" ColumnName="admission" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="specialty_priorities">
+      <EntityTypeMapping TypeName="EnrollmentCampaignModel.specialty_priorities">
+        <MappingFragment StoreEntitySet="specialty_priorities">
+          <ScalarProperty Name="enrollee_ID" ColumnName="enrollee_ID" />
+          <ScalarProperty Name="specialty_ID" ColumnName="specialty_ID" />
+          <ScalarProperty Name="priority" ColumnName="priority" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="towns_enum">
+      <EntityTypeMapping TypeName="EnrollmentCampaignModel.towns_enum">
+        <MappingFragment StoreEntitySet="towns_enum">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="country_ID" ColumnName="country_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trees">
+      <EntityTypeMapping TypeName="EnrollmentCampaignModel.Tree">
+        <MappingFragment StoreEntitySet="Tree">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="parent_ID" ColumnName="parent_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
