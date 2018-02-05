@@ -1,0 +1,1 @@
+delete from enrollees where name='name'

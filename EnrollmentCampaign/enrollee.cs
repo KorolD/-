@@ -18,7 +18,7 @@ namespace EnrollmentCampaign
         public enrollee()
         {
             this.CT_results = new HashSet<CT_results>();
-            this.specialty_priorities = new HashSet<specialty_priorities>();
+            this.pleas = new HashSet<plea>();
         }
     
         public int ID { get; set; }
@@ -37,8 +37,8 @@ namespace EnrollmentCampaign
         public virtual ICollection<CT_results> CT_results { get; set; }
         public virtual towns_enum towns_enum { get; set; }
         public virtual parent parent { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<specialty_priorities> specialty_priorities { get; set; }
         public virtual writing_locker writing_locker { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<plea> pleas { get; set; }
     }
 }

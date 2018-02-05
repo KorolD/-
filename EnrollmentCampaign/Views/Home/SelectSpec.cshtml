@@ -1,0 +1,10 @@
+﻿@model IEnumerable<speciality_enum>
+
+@if (Model.Count() > 0)
+{
+<option value="0" disabled selected></option>
+}
+@foreach(var s in Model)
+{
+    <option value="@s.ID">@s.name</option>
+}

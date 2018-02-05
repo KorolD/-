@@ -18,8 +18,10 @@ namespace EnrollmentCampaign
         public string name { get; set; }
         public string surname { get; set; }
         public string patronymic { get; set; }
-        public System.DateTime birthdate { get; set; }
+        public Nullable<System.DateTime> birthdate { get; set; }
+        public Nullable<int> town_ID { get; set; }
     
         public virtual enrollee enrollee { get; set; }
+        public virtual towns_enum towns_enum { get; set; }
     }
 }

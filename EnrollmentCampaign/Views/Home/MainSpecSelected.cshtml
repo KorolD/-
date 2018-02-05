@@ -1,0 +1,549 @@
+﻿@model (Plea_group gr, int already_selected)
+
+<script>
+    var already_selected = @Model.already_selected;
+    var limit = @Model.gr.positions;
+    var UpdateCounter = false;
+    var RenewCounter = function () {
+        if (UpdateCounter) {
+            var i = 0;
+            $('li').find('#spec').each(function (index) {
+                var val = $(this).prop('value');
+                if (val != 0 && val != undefined) {
+                    i++;
+                }
+            });
+            $('#counter').html(i);
+        }
+    };
+</script>
+
+<select hidden id="test">
+    @for (int i = 0; i < Model.gr.specialities.Count; ++i)
+    {
+        var f = Model.gr.specialities[i];
+        <option financing="@f.financing" id="@string.Join("","t",i.ToString())" form="@f.form" period="@f.period" uni="@f.university" value="@f.ID"
+                @if (i < Model.already_selected) { @: selected_by="@i.ToString()"
+                } else { @: selected_by="-1"
+                }></option>
+    }
+</select>
+
+<button onclick="Save()" class="btn btn-primary">Save</button>
+<button onclick="Delete()" class="btn btn-danger">Delete</button>
+<label>Specialities selected: </label>
+<label id="counter">@Model.already_selected</label>
+<p></p>
+<ol id="sortable" class="list-group">
+
+
+    @*@for (int i = 0; i < Model.already_selected; ++i)
+        {
+            <li class="list-group-item" id="@i.ToString()">
+
+                <button onclick="Deselect(this)">X</button>
+
+                @if (Model.gr.financing.Count == 1)
+                {
+                    <label id="fin" value="@Model.gr.financing.First().ID">@Model.gr.financing.First().name</label>
+                }
+                else
+                {
+                    <select id="fin" onchange="SomethingChanged(this)">
+                        @foreach (var f in Model.gr.financing)
+                        {
+                            <option @if (Model.gr.specialities[i].financing == f.ID) { @: selected
+                                    }
+                                    value="if.ID">
+                                @f.name
+                                </option>
+                            }
+                    </select>
+                }
+
+                @if (Model.gr.forms.Count == 1)
+                {
+                    <label id="form" value="@Model.gr.forms.First().ID">@Model.gr.forms.First().name</label>
+                }
+                else
+                {
+                    <select id="form" onchange="SomethingChanged(this)">
+                        @foreach (var f in Model.gr.forms)
+                        {
+                            <option @if (Model.gr.specialities[i].form == f.ID) { @: selected
+                                    }
+                                    value="@f.ID">
+                                @f.name
+                                </option>
+                            }
+                    </select>
+                }
+
+                @if (Model.gr.periods.Count == 1)
+                {
+                    <label id="period" value="@Model.gr.periods.First().ID">@Model.gr.periods.First().name</label>
+                }
+                else
+                {
+                    <select id="period" onchange="SomethingChanged(this)">
+                        @foreach (var f in Model.gr.periods)
+                        {
+                            <option @if (Model.gr.specialities[i].period == f.ID) { @: selected
+                                    }
+                                    value="@f.ID">
+                                @f.name
+                                </option>
+                            }
+                    </select>
+                }
+
+                @if (Model.gr.universities.Count == 1)
+                {
+                    <label id="uni" value="@Model.gr.universities.First().ID">@Model.gr.universities.First().name</label>
+                }
+                else
+                {
+                    <select id="uni" onchange="SomethingChanged(this)">
+                        @foreach (var f in Model.gr.universities)
+                        {
+                            <option @if (Model.gr.specialities[i].university == f.ID) { @: selected
+                                    }
+                                    value="@f.ID">
+                                @f.name
+                                </option>
+                            }
+                    </select>
+                }
+
+
+                <select id="spec" onchange="SpecialitySelected(this)">
+                    @foreach (var s in Model.gr.specialities)
+                    {
+                        <option @if (Model.gr.specialities[i].ID == s.ID) { @: selected
+                                }
+                                @if (!(Model.gr.specialities[i].financing == s.financing && Model.gr.specialities[i].form == s.form && Model.gr.specialities[i].period == s.period && Model.gr.specialities[i].university == s.university)&&(Model.gr.specialities.IndexOf(s)>=Model.already_selected||s==Model.gr.specialities[i])) { @: hidden disabled
+                                }
+                                value="@s.ID">
+                            @s.name
+                            </option>
+                        }
+                </select>
+
+            </li>
+        }*@
+
+
+
+
+
+    @for (int i = 0; i < Model.gr.positions; ++i)
+    {
+        <li @if (i > Model.already_selected) { @: style="display: none;" displayed="false"
+            } else { @: displayed=true
+            }
+            class="list-group-item" id="@i.ToString()">
+
+            <label id="lbl">
+                @((i + 1).ToString() + ".")
+            </label>
+            <label>Financing:</label>
+
+
+            @if (Model.gr.financing.Count == 1)
+            {
+                <label id="fin" value="@Model.gr.financing.First().ID">@Model.gr.financing.First().name</label>
+            }
+            else
+            {
+                <select id="fin" onchange="SomethingChanged(this)">
+                    @if (i >= Model.already_selected)
+                    {
+                        <option value="0" disabled selected></option>
+                        foreach (var f in Model.gr.financing)
+                        {
+                            <option value="@f.ID">@f.name</option>
+                        }
+                    }
+                    else
+                    {
+                        foreach (var f in Model.gr.financing)
+                        {
+                            <option @if (f.ID == Model.gr.specialities[i].financing) { @: selected
+                                    }
+                                    value="@f.ID">
+                                @f.name
+                            </option>
+                        }
+                    }
+                </select>
+            }
+
+            <label>Form:</label>
+
+
+            @if (Model.gr.forms.Count == 1)
+            {
+                <label id="form" value="@Model.gr.forms.First().ID">@Model.gr.forms.First().name</label>
+            }
+            else
+            {
+                <select id="form" onchange="SomethingChanged(this)">
+
+                    @if (i >= Model.already_selected)
+                    {
+                        <option value="0" disabled selected></option>
+                        foreach (var f in Model.gr.forms)
+                        {
+                            <option value="@f.ID">@f.name</option>
+                        }
+                    }
+                    else
+                    {
+                        foreach (var f in Model.gr.forms)
+                        {
+                            <option @if (f.ID == Model.gr.specialities[i].form) { @: selected
+                                    }
+                                    value="@f.ID">
+                                @f.name
+                            </option>
+                        }
+                    }
+
+
+                </select>
+            }
+
+            <label>Period:</label>
+
+            @if (Model.gr.periods.Count == 1)
+            {
+                <label id="period" value="@Model.gr.periods.First().ID">@Model.gr.periods.First().name</label>
+            }
+            else
+            {
+                <select id="period" onchange="SomethingChanged(this)">
+
+                    @if (i >= Model.already_selected)
+                    {
+                        <option value="0" disabled selected></option>
+                        foreach (var f in Model.gr.periods)
+                        {
+                            <option value="@f.ID">@f.name</option>
+                        }
+                    }
+                    else
+                    {
+                        foreach (var f in Model.gr.periods)
+                        {
+                            <option @if (f.ID == Model.gr.specialities[i].period) { @: selected
+                                    }
+                                    value="@f.ID">
+                                @f.name
+                            </option>
+                        }
+                    }
+
+
+                </select>
+            }
+
+            <label>University:</label>
+
+            @if (Model.gr.universities.Count == 1)
+            {
+                <label id="uni" value="@Model.gr.universities.First().ID">@Model.gr.universities.First().name</label>
+            }
+            else
+            {
+                <select id="uni" onchange="SomethingChanged(this)">
+
+                    @if (i >= Model.already_selected)
+                    {
+                        <option value="0" disabled selected></option>
+                        foreach (var f in Model.gr.universities)
+                        {
+                            <option value="@f.ID">@f.name</option>
+                        }
+                    }
+                    else
+                    {
+                        foreach (var f in Model.gr.universities)
+                        {
+                            <option @if (f.ID == Model.gr.specialities[i].university) { @: selected
+                                    }
+                                    value="@f.ID">
+                                @f.name
+                            </option>
+                        }
+                    }
+
+
+                </select>
+            }
+
+            <label>Speciality:</label>
+
+            <select id="spec" onchange="SpecialitySelected(this)">
+
+                <option value="0" disabled selected></option>
+                @foreach (var s in Model.gr.specialities)
+                {
+                    <option hidden disabled value="@s.ID">
+                        @s.name
+                    </option>
+                }
+            </select>
+
+            <button onclick="Deselect(this)" class="btn btn-danger">X</button>
+        </li>
+    }
+
+</ol>
+
+<script>
+    function SomethingChanged(e) {
+        var li = $(e).closest('li');
+        li.find('#spec').prop('value', 0);
+        li.find('#spec').find('option').each(function () {
+            $(this).removeAttr('hidden');
+            $(this).removeAttr('disabled');
+            var opt = $('#test').find('[value = ' + $(this).attr('value') + ']');
+            var fin = li.find('#fin').prop('value');
+            if (fin == undefined) {
+                fin = li.find('#fin').attr('value');
+            }
+            if (fin != opt.attr('financing')) {
+                $(this).attr('hidden', 'hidden');
+                $(this).attr('disabled', 'disabled');
+            }
+            var form = li.find('#form').prop('value');
+            if (form == undefined) {
+                form = li.find('#form').attr('value');
+            }
+            if (form != opt.attr('form')) {
+                $(this).attr('hidden', 'hidden');
+                $(this).attr('disabled', 'disabled');
+            }
+            var period = li.find('#period').prop('value');
+            if (period == undefined) {
+                period = li.find('#period').attr('value');
+            }
+            if (period != opt.attr('period')) {
+                $(this).attr('hidden', 'hidden');
+                $(this).attr('disabled', 'disabled');
+            }
+            var uni = li.find('#uni').prop('value');
+            if (uni == undefined) {
+                uni = li.find('#uni').attr('value');
+            }
+            if (uni != opt.attr('uni')) {
+                $(this).attr('hidden', 'hidden');
+                $(this).attr('disabled', 'disabled');
+            }
+            if (opt.attr('selected_by') != -1) {
+                $(this).attr('hidden', 'hidden');
+                $(this).attr('disabled', 'disabled');
+            }
+        });
+
+        var id = $(e).closest('li').attr('id');
+        var t = $('#test').find('[selected_by = ' + id + ']');
+        $('li').find('#spec').find('[value = ' + t.attr('value') + ']').each(function () {
+            var li = $(this).closest('li');
+
+            var fin = li.find('#fin').prop('value');
+            if (fin == undefined) {
+                fin = li.find('#fin').attr('value');
+            }
+            var form = li.find('#form').prop('value');
+            if (form == undefined) {
+                form = li.find('#form').attr('value');
+            }
+            var period = li.find('#period').prop('value');
+            if (period == undefined) {
+                period = li.find('#period').attr('value');
+            }
+            var uni = li.find('#uni').prop('value');
+            if (uni == undefined) {
+                uni = li.find('#uni').attr('value');
+            }
+            if (fin == t.attr('financing') && form == t.attr('form') && period == t.attr('period') && uni == t.attr('uni')) {
+
+                $(this).removeAttr('hidden');
+                $(this).removeAttr('disabled');
+            }
+        });
+        RenewCounter();
+    }
+</script>
+<script>
+    function SpecialitySelected(e) {
+        var id = $(e).closest('li').attr('id');
+        var t = $('#test').find('[selected_by = ' + id + ']');
+        if (t.length == 0) {
+            if (already_selected < limit) {
+                already_selected++;
+                var added = false;
+                $('li').each(function () {
+                    if ($(this).attr('displayed') == 'false' && !added) {
+                        added = true;
+                        $(this).removeAttr('style');
+                        $(this).attr('displayed', true);
+                    }
+                });
+            }
+        }
+        t.attr('selected_by', -1);
+        $('#test').find('[value = ' + $(e).prop('value') + ']').attr('selected_by', id);
+        $('li').find('#spec').find('[value = ' + $(e).prop('value') + ']').each(function () {
+            $(this).attr('hidden', 'hidden');
+            $(this).attr('disabled', 'disabled');
+        });
+        $('li').find('#spec').find('[value = ' + t.attr('value') + ']').each(function () {
+            var li = $(this).closest('li');
+
+            var fin = li.find('#fin').prop('value');
+            if (fin == undefined) {
+                fin = li.find('#fin').attr('value');
+            }
+            var form = li.find('#form').prop('value');
+            if (form == undefined) {
+                form = li.find('#form').attr('value');
+            }
+            var period = li.find('#period').prop('value');
+            if (period == undefined) {
+                period = li.find('#period').attr('value');
+            }
+            var uni = li.find('#uni').prop('value');
+            if (uni == undefined) {
+                uni = li.find('#uni').attr('value');
+            }
+            if (fin == t.attr('financing') && form == t.attr('form') && period == t.attr('period') && uni == t.attr('uni')) {
+
+                $(this).removeAttr('hidden');
+                $(this).removeAttr('disabled');
+            }
+        });
+        RenewCounter();
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $('#sortable').sortable({
+                stop: function (event, ui) {
+                    $('li').find('#lbl').each(function (index) {
+                        $(this).html((index + 1) + '.');
+                    });
+                }
+            });
+            $('#sortable').disableSelection();
+            for (var i = 0; i < already_selected; i++) {
+                var li = $('#' + i);
+                SomethingChanged(li.find('#fin'));
+                li.find('#spec').find('[selected = selected]').removeAttr('selected');
+                li.find('#spec').find('[value = ' + $('#t' + i).attr('value') + ']').attr('selected', 'selected');
+                li.find('#spec').prop('value', $('#t' + i).attr('value'));
+                SpecialitySelected(li.find('#spec'));
+            }
+            UpdateCounter = true;
+        });
+    });
+</script>
+<script>
+    function Deselect(e) {
+        var li = $(e).closest('li');
+        var t = $('#test').find('[selected_by = ' + li.attr('id') + ']');
+        if (t.length == 0) {
+            return;
+        }
+        t.attr('selected_by', -1);
+        already_selected--;
+        if (already_selected + 1 == limit) {
+            SomethingChanged(li.find('#fin'));
+            return;
+        }
+        li.attr('style', 'display: none;');
+        li.attr('displayed', false);
+        $('li').find('#spec').find('[value = ' + li.find('#spec').prop('value') + ']').each(function () {
+
+
+            var li = $(this).closest('li');
+
+            var fin = li.find('#fin').prop('value');
+            if (fin == undefined) {
+                fin = li.find('#fin').attr('value');
+            }
+            var form = li.find('#form').prop('value');
+            if (form == undefined) {
+                form = li.find('#form').attr('value');
+            }
+            var period = li.find('#period').prop('value');
+            if (period == undefined) {
+                period = li.find('#period').attr('value');
+            }
+            var uni = li.find('#uni').prop('value');
+            if (uni == undefined) {
+                uni = li.find('#uni').attr('value');
+            }
+            if (fin == t.attr('financing') && form == t.attr('form') && period == t.attr('period') && uni == t.attr('uni')) {
+
+                $(this).removeAttr('hidden');
+                $(this).removeAttr('disabled');
+            }
+
+
+        });
+        SomethingChanged(li.find('#fin'));
+        li.find('#spec').prop('value', 0);
+        var n = li;
+        var m;
+        while (n.length != 0) {
+            m = n;
+            n = m.next();
+        }
+        li.insertAfter(m);
+        $('li').find('#lbl').each(function (index) {
+            $(this).html((index + 1) + '.');
+        });
+    }
+</script>
+<script>
+    function Delete() {
+        if (!confirm('Delete application?')) {
+            return;
+        }
+        var data = {
+            enrollee_id: @Model.gr.enrollee_id
+        };
+        $.ajax({
+            url: '@Url.Action("DeletePlea")',
+            type: 'POST',
+            data: data,
+            datatype: 'json'
+        });
+        document.location.href=@Url.Action("Index");
+    }
+</script>
+<script>
+    function Save() {
+        if (!confirm('Save application?')) {
+            return;
+        }
+        var ids = [];
+        $('#sortable').find('li').each(function (index) {
+            ids.push($(this).find('#spec').prop('value'));
+        });
+        var data = {
+            enrollee_id: @Model.gr.enrollee_id,
+            ids: ids
+        };
+        $.ajax({
+            url: '@Url.Action("SavePlea")',
+            type: 'POST',
+            data: data,
+            datatype: 'json'
+        });
+        document.location.href=@Url.Action("Index");
+    }
+</script>

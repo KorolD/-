@@ -12,6 +12,8 @@ namespace EnrollmentCampaign
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class EnrollmentCampaignEntities : DbContext
     {
@@ -27,14 +29,36 @@ namespace EnrollmentCampaign
     
         public virtual DbSet<countries_enum> countries_enum { get; set; }
         public virtual DbSet<CT_enum> CT_enum { get; set; }
+        public virtual DbSet<CT_min_scores> CT_min_scores { get; set; }
+        public virtual DbSet<CT_priorities_enum> CT_priorities_enum { get; set; }
         public virtual DbSet<CT_results> CT_results { get; set; }
+        public virtual DbSet<enroll_in_enum> enroll_in_enum { get; set; }
         public virtual DbSet<enrollee> enrollees { get; set; }
-        public virtual DbSet<faculty_enum> faculty_enum { get; set; }
+        public virtual DbSet<financing_enum> financing_enum { get; set; }
+        public virtual DbSet<form_enum> form_enum { get; set; }
+        public virtual DbSet<min_score_spec_link> min_score_spec_link { get; set; }
+        public virtual DbSet<oksk_names_additional> oksk_names_additional { get; set; }
+        public virtual DbSet<oksk_names_main> oksk_names_main { get; set; }
+        public virtual DbSet<oksk_qualifications> oksk_qualifications { get; set; }
+        public virtual DbSet<oksk_specialities> oksk_specialities { get; set; }
         public virtual DbSet<parent> parents { get; set; }
-        public virtual DbSet<specialty_enum> specialty_enum { get; set; }
-        public virtual DbSet<specialty_priorities> specialty_priorities { get; set; }
+        public virtual DbSet<speciality_enum> speciality_enum { get; set; }
+        public virtual DbSet<speciality_group> speciality_group { get; set; }
         public virtual DbSet<towns_enum> towns_enum { get; set; }
+        public virtual DbSet<training_period_enum> training_period_enum { get; set; }
         public virtual DbSet<Tree> Trees { get; set; }
+        public virtual DbSet<university_enum> university_enum { get; set; }
         public virtual DbSet<writing_locker> writing_locker { get; set; }
+        public virtual DbSet<plea> pleas { get; set; }
+        public virtual DbSet<speciality_priorities> speciality_priorities { get; set; }
+    
+        public virtual int ClearLocker(Nullable<int> seconds)
+        {
+            var secondsParameter = seconds.HasValue ?
+                new ObjectParameter("seconds", seconds) :
+                new ObjectParameter("seconds", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClearLocker", secondsParameter);
+        }
     }
 }

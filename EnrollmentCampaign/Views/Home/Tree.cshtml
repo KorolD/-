@@ -1,4 +1,4 @@
-﻿@model Tree
+﻿@model TreeElement
 @{
     ViewBag.Title = "Tree";
 }
@@ -10,14 +10,22 @@
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 </head>
 <body>
-
+    <div class="container">
+        <button class="btn btn-primary" onclick="Count(id='@Model.ID')">Count</button>
+    </div>
     <div class="panel panel-primary">
         <div class="panel-heading">
             @if (Model.descendant_amount > 0)
             {
-            <button type="button" id="@Model.ID.ToString()" class="btn btn-default" loaded="false" onclick="GetDescendants(this)">
-                +
-            </button>
+                <button type="button" id="@Model.ID.ToString()" class="btn btn-default" loaded="false" onclick="GetDescendants(this)">
+                    +
+                </button>
+            }
+            <label class="btn">
+                <input type="checkbox" id="@string.Join("",Model.ID.ToString(),"c")" class="checkbox" onchange="CheckboxClick(this)" />
+            </label>
+            @if (Model.descendant_amount > 0)
+            {
                 @: @string.Join(" ", Model.value, "(", Model.descendant_amount, ")")
             }
             else
@@ -34,12 +42,20 @@
 
 <script>
     function GetDescendants(e) {
+        //$('#a').prop('indeterminate', true);
         if ($(e).attr('loaded') == 'true') {
             $('#' + e.id + 'b').removeAttr('hidden');
         } else {
+            var ch = $('#' + e.id + 'c').prop('checked');
+            var data = {
+                id: e.id,
+                chcked: ch
+            };
             $.ajax({
-                url: '@Url.Action("GetDescendants")' + '?id=' + e.id,
-                type: 'GET',
+                url: '@Url.Action("GetDescendants")',
+                type: 'POST',
+                data: data,
+                datatype: 'json',
                 success: function (data) {
                     $('#' + e.id + 'b').html(data);
                     $('#' + e.id + 'b').removeAttr('hidden');
@@ -60,3 +76,254 @@
         $('#' + e.id + 'b').attr('hidden', 'hidden');
     }
 </script>
+<script>
+    function CheckboxClick(c) {
+        var id = c.id.substring(0, c.id.length - 1);
+        if ($(c).prop('checked')) {
+            var f = function (index) {
+                $(this).prop('indeterminate', false);
+                $(this).prop('checked', true);
+            }
+            $(c).prop('indeterminate', false);
+            $(c).prop('checked', true);
+            $('#' + id + 'b').find('.checkbox').each(f);
+        } else {
+            var f = function (index) {
+                $(this).prop('indeterminate', false);
+                $(this).prop('checked', false);
+            }
+            $(c).prop('indeterminate', false);
+            $(c).prop('checked', false);
+            $('#' + id + 'b').find('.checkbox').each(f);
+        }
+        Check(c);
+    }
+</script>
+<script>
+    function Check(c) {
+        var t = $(c).closest('.panel-body');
+        if (t.length == 0) { return; }
+        var i = t.attr('id');
+        var id = i.substring(0, i.length - 1);
+        var e = $('#' + id + 'c');
+        if (e.prop('checked')) {
+            e.prop('checked', false);
+            $(t).find('.checkbox').each(function (index) {
+                if ($(this).prop('checked') || $(this).prop('indeterminate')) {
+                    e.prop('indeterminate', true);
+                    return false;
+                }
+            });
+            Check(e);
+            return;
+        }
+
+        if (e.prop('indeterminate')) {
+            var haschecked = false, hasunchecked = false;
+            e.prop('indeterminate', false);
+            $(t).find('.checkbox').each(function (index) {
+                if ($(this).prop('indeterminate')) {
+                    e.prop('indeterminate', true);
+                    return false;
+                }
+                if ($(this).prop('checked')) {
+                    haschecked = true;
+                    if (hasunchecked) {
+                        return false;
+                    }
+                } else {
+                    hasunchecked = true;
+                    if (haschecked) {
+                        return false;
+                    }
+                }
+            });
+            if (e.prop('indeterminate')) {
+                return;
+            }
+            if (haschecked && hasunchecked) {
+                e.prop('indeterminate', true);
+                return;
+            }
+            if (haschecked) {
+                e.prop('checked', true);
+            } else {
+                e.prop('checked', false);
+            }
+            Check(e);
+            return;
+        }
+
+
+        e.prop('checked', true);
+        $(t).find('.checkbox').each(function (index) {
+            if (!$(this).prop('checked') || $(this).prop('indeterminate')) {
+                e.prop('indeterminate', true);
+                e.prop('checked', false);
+                return false;
+            }
+        });
+        Check(e);
+        return;
+    }
+</script>
+<script>
+    function Count(id) {
+        var ids = [];
+        var f = function (index) {
+            var id = $(this).attr('id').substring(0, $(this).attr('id').length - 1);
+            if ($(this).prop('checked')) {
+                ids.push(id);
+            }
+            if ($(this).prop('indeterminate')) {
+                var idb = id + 'b';
+                $('#' + idb).find('.checkbox').filter(function (index) {
+                    return $(this).closest('.panel-body').attr('id') == idb;
+                }).each(f);
+            }
+        }
+        var c = $('#' + id + 'c');
+        if (c.prop('checked')) {
+            ids.push(id);
+        }
+        if (c.prop('indeterminate')) {
+            var idb = id + 'b';
+            $('#' + idb).find('.checkbox').filter(function (index) {
+                return $(this).closest('.panel-body').attr('id') == idb;
+            }).each(f);
+        }
+
+            $.ajax({
+                url: '@Url.Action("CountLeaves")',
+                type: 'POST',
+                data: { id: ids },
+                datatype: 'json',
+                success: function (data) {
+                    alert(data);
+                }
+            });
+    }
+</script>
+@*<script>
+    function CheckboxClick(c) {
+        var id = c.id.substring(0, c.id.length - 1);
+        if ($(c).attr('indeterminate') == 't' || ($(c).attr('indeterminate') == 'f' && !$(c).prop('checked'))) {
+            var f = function (index) {
+                $(this).prop('indeterminate', false);
+                $(this).prop('checked', false);
+                $(this).attr('descchecked', 0);
+                $(this).attr('indchecked', 0);
+                $(this).attr('indeterminate', 'f');
+            }
+            $(c).prop('indeterminate', false);
+            $(c).prop('checked', false);
+            $(c).attr('indchecked', 0);
+            $(c).attr('descchecked', 0);
+            $('#' + id + 'b').find('.checkbox').each(f);
+            Unchecked(c);
+            $(c).attr('indeterminate', 'f');
+            return;
+        }
+
+        var f = function (index) {
+            $(this).prop('indeterminate', false);
+            $(this).prop('checked', true);
+            var d = $(this).attr('descendants');
+            $(this).attr('indchecked', 0);
+            $(this).attr('descchecked', d);
+            $(this).attr('indeterminate', 'f');
+        }
+        $(c).prop('indeterminate', false);
+        $(c).prop('checked', true);
+        var d = $(c).attr('descendants');
+        $(c).attr('indchecked', 0);
+        $(c).attr('descchecked', d);
+        Checked(c);
+        $('#' + id + 'b').find('.checkbox').each(f);
+        return;
+    }
+</script>
+<script>
+    function Unchecked(c) {
+        var t = $(c).closest('.panel-body');
+        if (t.length == 0) { return }
+        var i = t.attr('id');
+        var id = i.substring(0, i.length - 1);
+        var e = $('#' + id + 'c');
+        if ($(c).attr('indeterminate') == 't') {
+            var ch = parseInt(e.attr('indchecked'));
+            e.attr('indchecked', ch - 1);
+        }
+        var chk = parseInt(e.attr('descchecked'));
+        chk -= 1;
+        if (chk + 1 == parseInt(e.attr('descendants'))) {
+            e.prop('indeterminate', true);
+            e.attr('indeterminate', 't');
+            e.prop('checked', false);
+        }
+        if (chk == 0) {
+            e.prop('indeterminate', false);
+            e.prop('checked', false);
+            Unchecked(e);
+            e.attr('indeterminate', 'f');
+        }
+        e.attr('descchecked', chk);
+    }
+</script>
+<script>
+    function Checked(c) {
+        var t = $(c).closest('.panel-body');
+        if (t.length == 0) { return }
+        var i = t.attr('id');
+        var id = i.substring(0, i.length - 1);
+        var e = $('#' + id + 'c');
+        if ($(c).attr('indeterminate') == 't') {
+            var ch = parseInt(e.attr('indchecked'));
+            e.attr('indchecked', ch + 1);
+        }
+        var chk = parseInt(e.attr('descchecked'));
+        chk += 1;
+        if (chk == 1) {
+            e.prop('indeterminate', true);
+            e.attr('indeterminate', 't');
+            e.prop('checked', false);
+            Checked(e);
+        }
+        if (chk == parseInt(e.attr('descendants')) && parseInt(e.attr('indchecked'))==0) {
+            e.prop('indeterminate', false);
+            e.attr('indeterminate', 'f');
+            e.prop('checked', true);
+            FullyChecked(e);
+        }
+        e.attr('descchecked', chk);
+    }
+</script>
+<script>
+    function FullyChecked(c) {
+        var t = $(c).closest('.panel-body');
+        if (t.length == 0) { return }
+        var i = t.attr('id');
+        var id = i.substring(0, i.length - 1);
+        var e = $('#' + id + 'c');
+        e.attr('indchecked', parseInt(e.attr('indchecked')) - 1);
+        var chk = parseInt(e.attr('descchecked'));
+        if (chk == 1) {
+            e.prop('indeterminate', true);
+            e.attr('indeterminate', 't');
+            e.prop('checked', false);
+            Checked(e);
+        }
+        if (chk == parseInt(e.attr('descendants')) && parseInt(e.attr('indchecked')) == 0) {
+            e.prop('indeterminate', false);
+            e.attr('indeterminate', 'f');
+            e.prop('checked', true);
+            FullyChecked(e);
+        }
+        e.attr('descchecked', chk);
+    }
+</script>
+<script>
+    function Indunchecked(c) {
+
+    }
+</script>*@

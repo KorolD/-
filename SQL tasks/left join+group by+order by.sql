@@ -1,0 +1,1 @@
+select t.name, COUNT(e.ID) as count from towns_enum t left join enrollees e on e.town_ID=t.ID group by t.name order by count desc

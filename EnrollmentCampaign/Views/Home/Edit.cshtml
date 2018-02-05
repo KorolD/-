@@ -64,25 +64,25 @@
                     }
                 </div>
 
-                <div class="form-group">
+                @*<div class="form-group">
                     <label>Faculty:</label>
                     <select class="form-control" onchange="FacultyChanged(this)">
-                        @foreach (var f in faculty_enum.faculty_list)
+                        @foreach (var f in university_enum.faculty_list)
                         {
-                            <option value="@f.Value" @if (f.Value == Model.GetSpeciality(1).faculty_ID.ToString()) { <text> selected="selected" </text> }>@f.Text</option>
+                            <option value="@f.Value" @if (f.Value == Model.GetSpeciality(1).university.ToString()) { <text> selected="selected" </text> }>@f.Text</option>
                         }
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Speciality:</label>
-                    @*@Html.DropDownList("speciality",Model.GetSpeciality(1).GetFaculty().speciality_list,new { @class="form-control",@id="specialities"})*@
+                     @Html.DropDownList("speciality",Model.GetSpeciality(1).GetFaculty().speciality_list,new { @class="form-control",@id="specialities"})
                     <select class="form-control" id="specialities" name="speciality">
                         @foreach (var s in Model.GetSpeciality(1).GetFaculty().speciality_list)
                         {
                             <option value="@s.Value" @if (s.Value == Model.GetSpeciality(1).ID.ToString()) { <text> selected="selected" </text> }>@s.Text</option>
                         }
                     </select>
-                </div>
+                </div>*@
             </div>
         </div>
     </form>
@@ -90,8 +90,7 @@
     <div class="btn-group">
         <input type="submit" form="mainF" value="Save" class="btn btn-primary" />
         @Html.ActionLink("Main", "IndexFromLock", Model.writing_locker, new { @class = "btn btn-primary" })
-        @Html.ActionLink("Delete","Delete", Model.writing_locker, new { @class ="btn btn-danger", @onclick="return confirm('Delete?')"})
-        
+        @Html.ActionLink("Delete","Delete", Model.writing_locker, new { @class ="btn btn-danger", @onclick="return confirm('Delete?')"}) 
     </div>
         </div>
     <script>
@@ -108,10 +107,10 @@
     <script>
             function FacultyChanged(e) {
                 $.ajax({
-                    url: '@Url.Action("GetSpecialities")'+'?faculty_id=' + e.value,
+                    url: '@Url.Action("GetSpecialities")'+'?university=' + e.value,
                     type: 'GET',
                     success: function (data) {
-                        $('#towns').html(data);
+                        $('#specialities').html(data);
                     }
                 });
             }

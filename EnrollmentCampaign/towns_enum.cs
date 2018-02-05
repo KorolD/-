@@ -18,6 +18,7 @@ namespace EnrollmentCampaign
         public towns_enum()
         {
             this.enrollees = new HashSet<enrollee>();
+            this.parents = new HashSet<parent>();
         }
     
         public int ID { get; set; }
@@ -27,5 +28,7 @@ namespace EnrollmentCampaign
         public virtual countries_enum countries_enum { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<enrollee> enrollees { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<parent> parents { get; set; }
     }
 }

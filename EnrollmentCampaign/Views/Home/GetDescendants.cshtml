@@ -1,4 +1,4 @@
-﻿@model (IEnumerable<Tree> desc, int id)
+﻿@model (IEnumerable<TreeElement> desc, int id, bool chcked)
 
 
 
@@ -11,6 +11,16 @@
                 <button type="button" id="@d.ID.ToString()" loaded="false" class="btn btn-default" onclick="GetDescendants(this)">
                     +
                 </button>
+                }
+                <label class="btn">
+                    <input type="checkbox" id="@string.Join("",d.ID.ToString(),"c")" class="checkbox" 
+                           @if (Model.chcked)
+                           {
+                               @: checked
+                           }
+                           onchange="CheckboxClick(this)"/>
+                </label>
+                @if (d.descendant_amount > 0) { 
                     @: @string.Join(" ", d.value, "(", d.descendant_amount, ")")
                 }
                 else

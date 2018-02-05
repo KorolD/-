@@ -1,0 +1,124 @@
+﻿@model Plea
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+</head>
+
+@if (Model.exists)
+{
+<script>
+        $(document).ready(function () {
+            $(function () {
+                MainSpecSelected(true);
+            });
+        });
+    </script>
+}
+<body>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Application</div>
+        <div id="body" class="panel-body">
+            @Html.ActionLink("Save","Index",null,new { @class="btn btn-primary", @onclick="confirm('Save application?')"})
+            @Html.ActionLink("Delete","Index",null,new { @class="btn btn-danger", @onclick= "confirm('Delete application?')" })
+            <label>Specialities selected: </label>
+            <label>0</label>
+            <p></p>
+            <ol class="list-group">
+                <li class="list-group-item">
+                    <label>1.</label>
+                    <label>Financing:</label>
+                    <select id="fin" onchange="SmfChanged()">
+                        <option value="0" disabled selected></option>
+                        @foreach (var f in Model.financing)
+                        {
+                            <option value="@f.ID">@f.name</option>
+                        }
+                    </select>
+
+                    <label>Form:</label>
+                    <select id="form" onchange="SmfChanged()">
+                        <option value="0" disabled selected></option>
+                        @foreach (var f in Model.forms)
+                        {
+                            <option value="@f.ID">@f.name</option>
+                        }
+                    </select>
+
+                    <label>Period:</label>
+                    <select id="period" onchange="SmfChanged()">
+                        <option value="0" disabled selected></option>
+                        @foreach (var f in Model.periods)
+                        {
+                            <option value="@f.ID">@f.name</option>
+                        }
+                    </select>
+
+                    <label>University:</label>
+                    <select id="uni" onchange="SmfChanged()">
+                        <option value="0" disabled selected></option>
+                        @foreach (var f in Model.universities)
+                        {
+                            <option value="@f.ID">@f.name</option>
+                        }
+                    </select>
+
+                    <label>Speciality:</label>
+                    <select id="spec" onchange="MainSpecSelected(false)"></select>
+                    <button class="btn btn-danger">X</button>
+                </li>
+            </ol>
+        </div>
+    </div>
+</body>
+<script>
+    function SmfChanged() {
+        var data = {
+            fin: $('#fin').prop('value'),
+            form: $('#form').prop('value'),
+            period: $('#period').prop('value'),
+            uni: $('#uni').prop('value')
+        };
+
+        //$('#spec').html('');
+        //alert(spec);
+        //spec.forEach(function (item, i, arr) {
+        //    if (item.financing == data.fin) {
+        //        alert(item);
+        //        var e = document.createElement('option');
+        //        e.innerHTML = item.name;
+        //        document.getElementById('spec').appendChild(e);
+        //    }
+        //});
+
+        $.ajax({
+            url: '@Url.Action("SelectSpec")',
+            type: 'POST',
+            data: data,
+            datatype: 'json',
+            success: function (data) {
+                $('#spec').html(data);
+            }
+        })
+    }
+</script>
+<script>
+    function MainSpecSelected(exists) {
+        var data = {
+            spec_id: $('#spec').prop('value'),
+            enrollee_id: @Model.enrollee_id,
+            already_exists: exists
+        };
+        $.ajax({
+            url: '@Url.Action("MainSpecSelected")',
+            type: 'POST',
+            data: data,
+            datatype: 'json',
+            success: function (data) {
+                $('#body').html(data);
+            }
+        })
+    }
+</script>

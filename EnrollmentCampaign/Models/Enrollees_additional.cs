@@ -47,23 +47,29 @@ namespace EnrollmentCampaign
             return birthdate.GetDateTimeFormats()[42].Substring(0, 10);
         }
 
-        public specialty_enum GetSpeciality(int priority)
+        public speciality_enum GetSpeciality(int priority, int plea = 0)
         {
             using(var ent = new EnrollmentCampaignEntities())
             {
-                var s=ent.specialty_priorities.FirstOrDefault(p => (p.priority == priority && p.enrollee_ID == ID));
-                if (s == null) return ent.specialty_enum.First();
-                return ent.specialty_enum.Find(s.specialty_ID);
+                plea pl;
+                if (plea == 0) { pl=ent.pleas.FirstOrDefault(p => p.enrollee_ID == ID); } else
+                {
+                    pl = ent.pleas.Find(plea);
+                }
+                if(pl==null) return ent.speciality_enum.First();
+                var s=ent.speciality_priorities.FirstOrDefault(p => (p.priority == priority && p.plea_ID == pl.ID));
+                if (s == null) return ent.speciality_enum.First();
+                return ent.speciality_enum.Find(s.speciality_ID);
             }
         }
 
-        public specialty_priorities GetPriority(int priority)
-        {
-            using (var ent = new EnrollmentCampaignEntities())
-            {
-                return ent.specialty_priorities.First(p => (p.priority == priority && p.enrollee_ID == ID));
-            }
-        }
+        //public speciality_priorities GetPriority(int priority)
+        //{
+        //    using (var ent = new EnrollmentCampaignEntities())
+        //    {
+        //        return ent.speciality_priorities.First(p => (p.priority == priority && p.enrollee_ID == ID));
+        //    }
+        //}
 
         public void FromForm(System.Collections.Specialized.NameValueCollection Form)
         {
@@ -76,7 +82,7 @@ namespace EnrollmentCampaign
                     _results.AllExistingCT.Add(new CT_results()
                     {
                         enrollee_ID = ID,
-                        CT_ID = id,
+                        CT_ID = (byte)id,
                         result = byte.Parse(Form.GetValues("CT_res" + i.ToString()).First())
                     });
                 }
@@ -117,7 +123,8 @@ namespace EnrollmentCampaign
                 {
                     town_ID = ent.towns_enum.First().ID,
                     house = 1,
-                    birthdate = new DateTime(2000, 1, 1)
+                    birthdate = new DateTime(2000, 1, 1),
+                    writing_locker=new writing_locker() { enrollee_ID = 0}
                 };
         }
     }
@@ -179,26 +186,50 @@ namespace EnrollmentCampaign
         }
     }
 
-    public partial class specialty_enum
+    public partial class speciality_enum
     {
+        string _name;
+        public string name {
+            get
+            {
+                if (_name == null)
+                {
+                    using(var ent = new EnrollmentCampaignEntities())
+                    {
+                        var s = ent.oksk_specialities.Find(oksk_ID);
+                        var add = ent.oksk_names_additional.Find(s.name_additional_ID)?.additional;
+                        if (add != null)
+                        {
+                            _name = ent.oksk_names_main.Find(s.name_ID).name + add;
+                        }
+                        else
+                        {
+                            _name = ent.oksk_names_main.Find(s.name_ID).name;
+                        }
+                    }
+                }
+                return _name;
+            }
+        }
+
         public string GetFullName()
         {
             using (var ent = new EnrollmentCampaignEntities())
             {
-                return name + "  -  " + ent.faculty_enum.Find(faculty_ID).name;
+                return name + "  -  " + ent.university_enum.Find(university).name;
             }
         }
 
-        public faculty_enum GetFaculty()
+        public university_enum GetFaculty()
         {
             using (var ent = new EnrollmentCampaignEntities())
             {
-                return ent.faculty_enum.Find(faculty_ID);
+                return ent.university_enum.Find(university);
             }
         }
     }
 
-    public partial class faculty_enum
+    public partial class university_enum
     {
         private static List<SelectListItem> _faculty_list;
         public static List<SelectListItem> faculty_list
@@ -208,7 +239,7 @@ namespace EnrollmentCampaign
                 if (_faculty_list != null) return _faculty_list;
                 using(var ent = new EnrollmentCampaignEntities())
                 {
-                    var faculties = ent.faculty_enum;
+                    var faculties = ent.university_enum;
                     _faculty_list = new List<SelectListItem>(faculties.Select(f => new SelectListItem() { Value = f.ID.ToString(), Text = f.name }));
                     return _faculty_list;
                 }
@@ -223,7 +254,7 @@ namespace EnrollmentCampaign
                 if (_speciality_list != null) return _speciality_list;
                 using(var ent=new EnrollmentCampaignEntities())
                 {
-                    _speciality_list = new List<SelectListItem>(ent.specialty_enum.Where(s => s.faculty_ID == ID).Select(s => new SelectListItem() { Value = s.ID.ToString(), Text = s.name }));
+                    _speciality_list = new List<SelectListItem>(ent.speciality_enum.Where(s => s.university == ID).ToList().Select(s => new SelectListItem() { Value = s.ID.ToString(), Text = s.name }));
                     return _speciality_list;
                 }
             }
@@ -283,6 +314,48 @@ namespace EnrollmentCampaign
     public partial class writing_locker
     {
         public static TimeSpan time_limit = new TimeSpan(0, 0, 20, 0, 0);
+
+        public static bool TryEnterLock(enrollee e, EnrollmentCampaignEntities ent)
+        {
+
+                var loc = ent.writing_locker.Find(e.ID);
+                if (loc == null)
+                {
+                    var l = new writing_locker() { begin_time = DateTime.Now, enrollee_ID = e.ID };
+                    ent.writing_locker.Add(l);
+                    ent.SaveChanges();
+                    e.writing_locker = l;
+                    return true;
+                }
+                if (loc.begin_time.Since() > time_limit)
+                {
+                    loc.begin_time = DateTime.Now;
+                    ent.SaveChanges();
+                    e.writing_locker = loc;
+                    return true;
+                }
+                return false;
+            
+        }
+        
+        public static bool TryExitWritingLock(writing_locker l)//true=success(deleted)/enrollee_id=0, false=out_of_time(deleted)/wrong locker
+        {
+            if (l.enrollee_ID == 0) return true;
+            using (var ent = new EnrollmentCampaignEntities())
+            {
+                var w = ent.writing_locker.Find(l.enrollee_ID);
+                if (w == null) return false;
+                DateTime beg = new DateTime(w.begin_time.Year, w.begin_time.Month, w.begin_time.Day, w.begin_time.Hour, w.begin_time.Minute, w.begin_time.Second);
+                if (beg != l.begin_time) return false;
+                ent.writing_locker.Remove(w);
+                ent.SaveChanges();
+                if (w.begin_time.Since() > time_limit)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
     }
 
     public static class for_writing_locker

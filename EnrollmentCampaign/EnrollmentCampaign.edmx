@@ -16,7 +16,23 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CT_min_scores">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CT_ID" Type="tinyint" Nullable="false" />
+          <Property Name="min_score" Type="tinyint" Nullable="false" />
+          <Property Name="min_score_additional" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CT_priorities_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="CT_results">
@@ -25,8 +41,15 @@
             <PropertyRef Name="CT_ID" />
           </Key>
           <Property Name="enrollee_ID" Type="int" Nullable="false" />
-          <Property Name="CT_ID" Type="int" Nullable="false" />
+          <Property Name="CT_ID" Type="tinyint" Nullable="false" />
           <Property Name="result" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="enroll_in_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="enrollees">
           <Key>
@@ -44,12 +67,66 @@
           <Property Name="birthdate" Type="date" Nullable="false" />
           <Property Name="passport" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="faculty_enum">
+        <EntityType Name="financing_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="form_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="min_score-spec_link">
+          <Key>
+            <PropertyRef Name="speciality_ID" />
+            <PropertyRef Name="min_score_ID" />
+          </Key>
+          <Property Name="speciality_ID" Type="int" Nullable="false" />
+          <Property Name="min_score_ID" Type="smallint" Nullable="false" />
+          <Property Name="priority" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="oksk_names_additional">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="additional" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="oksk_names_main">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="oksk_qualifications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="oksk_specialities">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name_ID" Type="int" Nullable="false" />
+          <Property Name="name_additional_ID" Type="int" />
+          <Property Name="code" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="oksk_spec-qualif_link">
+          <Key>
+            <PropertyRef Name="qualification_ID" />
+            <PropertyRef Name="speciality_ID" />
+          </Key>
+          <Property Name="qualification_ID" Type="int" Nullable="false" />
+          <Property Name="speciality_ID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="parents">
           <Key>
@@ -59,24 +136,49 @@
           <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="surname" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="patronymic" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="birthdate" Type="date" Nullable="false" />
+          <Property Name="birthdate" Type="date" />
+          <Property Name="town_ID" Type="int" />
         </EntityType>
-        <EntityType Name="specialty_enum">
+        <EntityType Name="plea">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="faculty_ID" Type="int" Nullable="false" />
-          <Property Name="admission" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="specialty_priorities">
-          <Key>
-            <PropertyRef Name="enrollee_ID" />
-            <PropertyRef Name="specialty_ID" />
-          </Key>
           <Property Name="enrollee_ID" Type="int" Nullable="false" />
-          <Property Name="specialty_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="speciality_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="oksk_ID" Type="int" Nullable="false" />
+          <Property Name="group_ID" Type="smallint" Nullable="false" />
+          <Property Name="financing" Type="tinyint" Nullable="false" />
+          <Property Name="university" Type="int" Nullable="false" />
+          <Property Name="form" Type="tinyint" Nullable="false" />
+          <Property Name="training_period" Type="tinyint" Nullable="false" />
+          <Property Name="enroll_in" Type="tinyint" Nullable="false" />
+          <Property Name="admission_total" Type="smallint" Nullable="false" />
+          <Property Name="admission_orphans" Type="smallint" Nullable="false" />
+          <Property Name="admission_guards" Type="smallint" Nullable="false" />
+          <Property Name="date_start" Type="date" />
+          <Property Name="date_end" Type="date" />
+        </EntityType>
+        <EntityType Name="speciality_group">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="add_if_selected" Type="smallint" />
+          <Property Name="select_limit" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="speciality_priorities">
+          <Key>
+            <PropertyRef Name="plea_ID" />
+            <PropertyRef Name="speciality_ID" />
+          </Key>
+          <Property Name="plea_ID" Type="int" Nullable="false" />
+          <Property Name="speciality_ID" Type="int" Nullable="false" />
           <Property Name="priority" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="towns_enum">
@@ -87,6 +189,13 @@
           <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="country_ID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="training_period_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Tree">
           <Key>
             <PropertyRef Name="ID" />
@@ -95,6 +204,13 @@
           <Property Name="parent_ID" Type="int" Nullable="false" />
           <Property Name="value" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="university_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="writing_locker">
           <Key>
             <PropertyRef Name="enrollee_ID" />
@@ -102,6 +218,42 @@
           <Property Name="enrollee_ID" Type="int" Nullable="false" />
           <Property Name="begin_time" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK__parents__enrolle__589C25F3">
+          <End Role="enrollees" Type="Self.enrollees" Multiplicity="1" />
+          <End Role="parents" Type="Self.parents" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="enrollees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="parents">
+              <PropertyRef Name="enrollee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__parents__town_ID__59904A2C">
+          <End Role="towns_enum" Type="Self.towns_enum" Multiplicity="0..1" />
+          <End Role="parents" Type="Self.parents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="towns_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="parents">
+              <PropertyRef Name="town_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CT_min_scores_CT_enum">
+          <End Role="CT_enum" Type="Self.CT_enum" Multiplicity="1" />
+          <End Role="CT_min_scores" Type="Self.CT_min_scores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CT_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CT_min_scores">
+              <PropertyRef Name="CT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CT_results_CT_enum">
           <End Role="CT_enum" Type="Self.CT_enum" Multiplicity="1" />
           <End Role="CT_results" Type="Self.CT_results" Multiplicity="*" />
@@ -138,51 +290,219 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_parents_enrollees">
+        <Association Name="FK_min_score-spec_link_CT_min_scores">
+          <End Role="CT_min_scores" Type="Self.CT_min_scores" Multiplicity="1" />
+          <End Role="min_score-spec_link" Type="Self.min_score-spec_link" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CT_min_scores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="min_score-spec_link">
+              <PropertyRef Name="min_score_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_min_score-spec_link_CT_priorities_enum">
+          <End Role="CT_priorities_enum" Type="Self.CT_priorities_enum" Multiplicity="1" />
+          <End Role="min_score-spec_link" Type="Self.min_score-spec_link" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CT_priorities_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="min_score-spec_link">
+              <PropertyRef Name="priority" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_min_score-spec_link_specialty_enum">
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="1" />
+          <End Role="min_score-spec_link" Type="Self.min_score-spec_link" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="speciality_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="min_score-spec_link">
+              <PropertyRef Name="speciality_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_oksk_specialities_oksk_names_additional">
+          <End Role="oksk_names_additional" Type="Self.oksk_names_additional" Multiplicity="0..1" />
+          <End Role="oksk_specialities" Type="Self.oksk_specialities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oksk_names_additional">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="oksk_specialities">
+              <PropertyRef Name="name_additional_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_oksk_specialities_oksk_names_main">
+          <End Role="oksk_names_main" Type="Self.oksk_names_main" Multiplicity="1" />
+          <End Role="oksk_specialities" Type="Self.oksk_specialities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oksk_names_main">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="oksk_specialities">
+              <PropertyRef Name="name_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_oksk_spec-qualif_link_oksk_qualifications">
+          <End Role="oksk_qualifications" Type="Self.oksk_qualifications" Multiplicity="1" />
+          <End Role="oksk_spec-qualif_link" Type="Self.oksk_spec-qualif_link" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oksk_qualifications">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="oksk_spec-qualif_link">
+              <PropertyRef Name="qualification_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_oksk_spec-qualif_link_oksk_specialities">
+          <End Role="oksk_specialities" Type="Self.oksk_specialities" Multiplicity="1" />
+          <End Role="oksk_spec-qualif_link" Type="Self.oksk_spec-qualif_link" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oksk_specialities">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="oksk_spec-qualif_link">
+              <PropertyRef Name="speciality_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_plea_enrollees">
           <End Role="enrollees" Type="Self.enrollees" Multiplicity="1" />
-          <End Role="parents" Type="Self.parents" Multiplicity="0..1" />
+          <End Role="plea" Type="Self.plea" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="enrollees">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="parents">
+            <Dependent Role="plea">
               <PropertyRef Name="enrollee_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_specialty_enum_faculty_enum">
-          <End Role="faculty_enum" Type="Self.faculty_enum" Multiplicity="1" />
-          <End Role="specialty_enum" Type="Self.specialty_enum" Multiplicity="*" />
+        <Association Name="FK_speciality_enum_enroll_in_enum">
+          <End Role="enroll_in_enum" Type="Self.enroll_in_enum" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="faculty_enum">
+            <Principal Role="enroll_in_enum">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="specialty_enum">
-              <PropertyRef Name="faculty_ID" />
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="enroll_in" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_specialty_priorities_enrollees">
-          <End Role="enrollees" Type="Self.enrollees" Multiplicity="1" />
-          <End Role="specialty_priorities" Type="Self.specialty_priorities" Multiplicity="*" />
+        <Association Name="FK_speciality_enum_financing_enum">
+          <End Role="financing_enum" Type="Self.financing_enum" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="enrollees">
+            <Principal Role="financing_enum">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="specialty_priorities">
-              <PropertyRef Name="enrollee_ID" />
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="financing" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_enum_form_enum">
+          <End Role="form_enum" Type="Self.form_enum" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="form_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="form" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_enum_oksk_specialities">
+          <End Role="oksk_specialities" Type="Self.oksk_specialities" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oksk_specialities">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="oksk_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_enum_speciality_group">
+          <End Role="speciality_group" Type="Self.speciality_group" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="speciality_group">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="group_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_enum_training_period_enum">
+          <End Role="training_period_enum" Type="Self.training_period_enum" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="training_period_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="training_period" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_enum_university_enum">
+          <End Role="university_enum" Type="Self.university_enum" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="university_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="university" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_group_speciality_group">
+          <End Role="speciality_group" Type="Self.speciality_group" Multiplicity="0..1" />
+          <End Role="speciality_group1" Type="Self.speciality_group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="speciality_group">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_group1">
+              <PropertyRef Name="add_if_selected" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_priorities_plea">
+          <End Role="plea" Type="Self.plea" Multiplicity="1" />
+          <End Role="speciality_priorities" Type="Self.speciality_priorities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="plea">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_priorities">
+              <PropertyRef Name="plea_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_specialty_priorities_specialty_enum">
-          <End Role="specialty_enum" Type="Self.specialty_enum" Multiplicity="1" />
-          <End Role="specialty_priorities" Type="Self.specialty_priorities" Multiplicity="*" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="1" />
+          <End Role="speciality_priorities" Type="Self.speciality_priorities" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="specialty_enum">
+            <Principal Role="speciality_enum">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="specialty_priorities">
-              <PropertyRef Name="specialty_ID" />
+            <Dependent Role="speciality_priorities">
+              <PropertyRef Name="speciality_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -222,18 +542,47 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="ClearLocker" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="seconds" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="Хранилище EnrollmentCampaignModelContainer">
           <EntitySet Name="countries_enum" EntityType="Self.countries_enum" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CT_enum" EntityType="Self.CT_enum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CT_min_scores" EntityType="Self.CT_min_scores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CT_priorities_enum" EntityType="Self.CT_priorities_enum" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CT_results" EntityType="Self.CT_results" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="enroll_in_enum" EntityType="Self.enroll_in_enum" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="enrollees" EntityType="Self.enrollees" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="faculty_enum" EntityType="Self.faculty_enum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="financing_enum" EntityType="Self.financing_enum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="form_enum" EntityType="Self.form_enum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="min_score-spec_link" EntityType="Self.min_score-spec_link" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="oksk_names_additional" EntityType="Self.oksk_names_additional" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="oksk_names_main" EntityType="Self.oksk_names_main" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="oksk_qualifications" EntityType="Self.oksk_qualifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="oksk_specialities" EntityType="Self.oksk_specialities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="oksk_spec-qualif_link" EntityType="Self.oksk_spec-qualif_link" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="parents" EntityType="Self.parents" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="specialty_enum" EntityType="Self.specialty_enum" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="specialty_priorities" EntityType="Self.specialty_priorities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="plea" EntityType="Self.plea" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="speciality_enum" EntityType="Self.speciality_enum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="speciality_group" EntityType="Self.speciality_group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="speciality_priorities" EntityType="Self.speciality_priorities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="towns_enum" EntityType="Self.towns_enum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="training_period_enum" EntityType="Self.training_period_enum" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tree" EntityType="Self.Tree" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="university_enum" EntityType="Self.university_enum" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="writing_locker" EntityType="Self.writing_locker" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__parents__enrolle__589C25F3" Association="Self.FK__parents__enrolle__589C25F3">
+            <End Role="enrollees" EntitySet="enrollees" />
+            <End Role="parents" EntitySet="parents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__parents__town_ID__59904A2C" Association="Self.FK__parents__town_ID__59904A2C">
+            <End Role="towns_enum" EntitySet="towns_enum" />
+            <End Role="parents" EntitySet="parents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CT_min_scores_CT_enum" Association="Self.FK_CT_min_scores_CT_enum">
+            <End Role="CT_enum" EntitySet="CT_enum" />
+            <End Role="CT_min_scores" EntitySet="CT_min_scores" />
+          </AssociationSet>
           <AssociationSet Name="FK_CT_results_CT_enum" Association="Self.FK_CT_results_CT_enum">
             <End Role="CT_enum" EntitySet="CT_enum" />
             <End Role="CT_results" EntitySet="CT_results" />
@@ -246,21 +595,77 @@
             <End Role="towns_enum" EntitySet="towns_enum" />
             <End Role="enrollees" EntitySet="enrollees" />
           </AssociationSet>
-          <AssociationSet Name="FK_parents_enrollees" Association="Self.FK_parents_enrollees">
-            <End Role="enrollees" EntitySet="enrollees" />
-            <End Role="parents" EntitySet="parents" />
+          <AssociationSet Name="FK_min_score-spec_link_CT_min_scores" Association="Self.FK_min_score-spec_link_CT_min_scores">
+            <End Role="CT_min_scores" EntitySet="CT_min_scores" />
+            <End Role="min_score-spec_link" EntitySet="min_score-spec_link" />
           </AssociationSet>
-          <AssociationSet Name="FK_specialty_enum_faculty_enum" Association="Self.FK_specialty_enum_faculty_enum">
-            <End Role="faculty_enum" EntitySet="faculty_enum" />
-            <End Role="specialty_enum" EntitySet="specialty_enum" />
+          <AssociationSet Name="FK_min_score-spec_link_CT_priorities_enum" Association="Self.FK_min_score-spec_link_CT_priorities_enum">
+            <End Role="CT_priorities_enum" EntitySet="CT_priorities_enum" />
+            <End Role="min_score-spec_link" EntitySet="min_score-spec_link" />
           </AssociationSet>
-          <AssociationSet Name="FK_specialty_priorities_enrollees" Association="Self.FK_specialty_priorities_enrollees">
+          <AssociationSet Name="FK_min_score-spec_link_specialty_enum" Association="Self.FK_min_score-spec_link_specialty_enum">
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+            <End Role="min_score-spec_link" EntitySet="min_score-spec_link" />
+          </AssociationSet>
+          <AssociationSet Name="FK_oksk_specialities_oksk_names_additional" Association="Self.FK_oksk_specialities_oksk_names_additional">
+            <End Role="oksk_names_additional" EntitySet="oksk_names_additional" />
+            <End Role="oksk_specialities" EntitySet="oksk_specialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_oksk_specialities_oksk_names_main" Association="Self.FK_oksk_specialities_oksk_names_main">
+            <End Role="oksk_names_main" EntitySet="oksk_names_main" />
+            <End Role="oksk_specialities" EntitySet="oksk_specialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_oksk_spec-qualif_link_oksk_qualifications" Association="Self.FK_oksk_spec-qualif_link_oksk_qualifications">
+            <End Role="oksk_qualifications" EntitySet="oksk_qualifications" />
+            <End Role="oksk_spec-qualif_link" EntitySet="oksk_spec-qualif_link" />
+          </AssociationSet>
+          <AssociationSet Name="FK_oksk_spec-qualif_link_oksk_specialities" Association="Self.FK_oksk_spec-qualif_link_oksk_specialities">
+            <End Role="oksk_specialities" EntitySet="oksk_specialities" />
+            <End Role="oksk_spec-qualif_link" EntitySet="oksk_spec-qualif_link" />
+          </AssociationSet>
+          <AssociationSet Name="FK_plea_enrollees" Association="Self.FK_plea_enrollees">
             <End Role="enrollees" EntitySet="enrollees" />
-            <End Role="specialty_priorities" EntitySet="specialty_priorities" />
+            <End Role="plea" EntitySet="plea" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_enroll_in_enum" Association="Self.FK_speciality_enum_enroll_in_enum">
+            <End Role="enroll_in_enum" EntitySet="enroll_in_enum" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_financing_enum" Association="Self.FK_speciality_enum_financing_enum">
+            <End Role="financing_enum" EntitySet="financing_enum" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_form_enum" Association="Self.FK_speciality_enum_form_enum">
+            <End Role="form_enum" EntitySet="form_enum" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_oksk_specialities" Association="Self.FK_speciality_enum_oksk_specialities">
+            <End Role="oksk_specialities" EntitySet="oksk_specialities" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_speciality_group" Association="Self.FK_speciality_enum_speciality_group">
+            <End Role="speciality_group" EntitySet="speciality_group" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_training_period_enum" Association="Self.FK_speciality_enum_training_period_enum">
+            <End Role="training_period_enum" EntitySet="training_period_enum" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_university_enum" Association="Self.FK_speciality_enum_university_enum">
+            <End Role="university_enum" EntitySet="university_enum" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_group_speciality_group" Association="Self.FK_speciality_group_speciality_group">
+            <End Role="speciality_group" EntitySet="speciality_group" />
+            <End Role="speciality_group1" EntitySet="speciality_group" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_priorities_plea" Association="Self.FK_speciality_priorities_plea">
+            <End Role="plea" EntitySet="plea" />
+            <End Role="speciality_priorities" EntitySet="speciality_priorities" />
           </AssociationSet>
           <AssociationSet Name="FK_specialty_priorities_specialty_enum" Association="Self.FK_specialty_priorities_specialty_enum">
-            <End Role="specialty_enum" EntitySet="specialty_enum" />
-            <End Role="specialty_priorities" EntitySet="specialty_priorities" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+            <End Role="speciality_priorities" EntitySet="speciality_priorities" />
           </AssociationSet>
           <AssociationSet Name="FK_towns_enum_countries_enum" Association="Self.FK_towns_enum_countries_enum">
             <End Role="countries_enum" EntitySet="countries_enum" />
@@ -291,9 +696,29 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CT_min_scores" Relationship="Self.FK_CT_min_scores_CT_enum" FromRole="CT_enum" ToRole="CT_min_scores" />
           <NavigationProperty Name="CT_results" Relationship="Self.FK_CT_results_CT_enum" FromRole="CT_enum" ToRole="CT_results" />
+        </EntityType>
+        <EntityType Name="CT_min_scores">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CT_ID" Type="Byte" Nullable="false" />
+          <Property Name="min_score" Type="Byte" Nullable="false" />
+          <Property Name="min_score_additional" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="CT_enum" Relationship="Self.FK_CT_min_scores_CT_enum" FromRole="CT_min_scores" ToRole="CT_enum" />
+          <NavigationProperty Name="min_score_spec_link" Relationship="Self.FK_min_score_spec_link_CT_min_scores" FromRole="CT_min_scores" ToRole="min_score_spec_link" />
+        </EntityType>
+        <EntityType Name="CT_priorities_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="min_score_spec_link" Relationship="Self.FK_min_score_spec_link_CT_priorities_enum" FromRole="CT_priorities_enum" ToRole="min_score_spec_link" />
         </EntityType>
         <EntityType Name="CT_results">
           <Key>
@@ -301,10 +726,18 @@
             <PropertyRef Name="CT_ID" />
           </Key>
           <Property Name="enrollee_ID" Type="Int32" Nullable="false" />
-          <Property Name="CT_ID" Type="Int32" Nullable="false" />
+          <Property Name="CT_ID" Type="Byte" Nullable="false" />
           <Property Name="result" Type="Byte" Nullable="false" />
           <NavigationProperty Name="CT_enum" Relationship="Self.FK_CT_results_CT_enum" FromRole="CT_results" ToRole="CT_enum" />
           <NavigationProperty Name="enrollee" Relationship="Self.FK_CT_results_enrollees" FromRole="CT_results" ToRole="enrollees" />
+        </EntityType>
+        <EntityType Name="enroll_in_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="speciality_enum" Relationship="Self.FK_speciality_enum_enroll_in_enum" FromRole="enroll_in_enum" ToRole="speciality_enum" />
         </EntityType>
         <EntityType Name="enrollee">
           <Key>
@@ -324,16 +757,73 @@
           <NavigationProperty Name="CT_results" Relationship="Self.FK_CT_results_enrollees" FromRole="enrollees" ToRole="CT_results" />
           <NavigationProperty Name="towns_enum" Relationship="Self.FK_enrollees_towns_enum" FromRole="enrollees" ToRole="towns_enum" />
           <NavigationProperty Name="parent" Relationship="Self.FK_parents_enrollees" FromRole="enrollees" ToRole="parents" />
-          <NavigationProperty Name="specialty_priorities" Relationship="Self.FK_specialty_priorities_enrollees" FromRole="enrollees" ToRole="specialty_priorities" />
-          <NavigationProperty Name="writing_locker" Relationship="EnrollmentCampaignModel.FK_writing_locker_enrollees" FromRole="enrollee" ToRole="writing_locker" />
+          <NavigationProperty Name="writing_locker" Relationship="Self.FK_writing_locker_enrollees" FromRole="enrollees" ToRole="writing_locker" />
+          <NavigationProperty Name="pleas" Relationship="EnrollmentCampaignModel.FK_plea_enrollees" FromRole="enrollee" ToRole="plea" />
         </EntityType>
-        <EntityType Name="faculty_enum">
+        <EntityType Name="financing_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="speciality_enum" Relationship="Self.FK_speciality_enum_financing_enum" FromRole="financing_enum" ToRole="speciality_enum" />
+        </EntityType>
+        <EntityType Name="form_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="speciality_enum" Relationship="Self.FK_speciality_enum_form_enum" FromRole="form_enum" ToRole="speciality_enum" />
+        </EntityType>
+        <EntityType Name="min_score_spec_link">
+          <Key>
+            <PropertyRef Name="speciality_ID" />
+            <PropertyRef Name="min_score_ID" />
+          </Key>
+          <Property Name="speciality_ID" Type="Int32" Nullable="false" />
+          <Property Name="min_score_ID" Type="Int16" Nullable="false" />
+          <Property Name="priority" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="CT_min_scores" Relationship="Self.FK_min_score_spec_link_CT_min_scores" FromRole="min_score_spec_link" ToRole="CT_min_scores" />
+          <NavigationProperty Name="CT_priorities_enum" Relationship="Self.FK_min_score_spec_link_CT_priorities_enum" FromRole="min_score_spec_link" ToRole="CT_priorities_enum" />
+          <NavigationProperty Name="speciality_enum" Relationship="Self.FK_min_score_spec_link_specialty_enum" FromRole="min_score_spec_link" ToRole="speciality_enum" />
+        </EntityType>
+        <EntityType Name="oksk_names_additional">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="specialty_enum" Relationship="Self.FK_specialty_enum_faculty_enum" FromRole="faculty_enum" ToRole="specialty_enum" />
+          <Property Name="additional" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="oksk_specialities" Relationship="Self.FK_oksk_specialities_oksk_names_additional" FromRole="oksk_names_additional" ToRole="oksk_specialities" />
+        </EntityType>
+        <EntityType Name="oksk_names_main">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="oksk_specialities" Relationship="Self.FK_oksk_specialities_oksk_names_main" FromRole="oksk_names_main" ToRole="oksk_specialities" />
+        </EntityType>
+        <EntityType Name="oksk_qualifications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="oksk_specialities" Relationship="Self.oksk_spec_qualif_link" FromRole="oksk_qualifications" ToRole="oksk_specialities" />
+        </EntityType>
+        <EntityType Name="oksk_specialities">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name_ID" Type="Int32" Nullable="false" />
+          <Property Name="name_additional_ID" Type="Int32" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="oksk_names_additional" Relationship="Self.FK_oksk_specialities_oksk_names_additional" FromRole="oksk_specialities" ToRole="oksk_names_additional" />
+          <NavigationProperty Name="oksk_names_main" Relationship="Self.FK_oksk_specialities_oksk_names_main" FromRole="oksk_specialities" ToRole="oksk_names_main" />
+          <NavigationProperty Name="speciality_enum" Relationship="Self.FK_speciality_enum_oksk_specialities" FromRole="oksk_specialities" ToRole="speciality_enum" />
+          <NavigationProperty Name="oksk_qualifications" Relationship="Self.oksk_spec_qualif_link" FromRole="oksk_specialities" ToRole="oksk_qualifications" />
         </EntityType>
         <EntityType Name="parent">
           <Key>
@@ -343,30 +833,48 @@
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="birthdate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="birthdate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="enrollee" Relationship="Self.FK_parents_enrollees" FromRole="parents" ToRole="enrollees" />
+          <Property Name="town_ID" Type="Int32" />
+          <NavigationProperty Name="towns_enum" Relationship="EnrollmentCampaignModel.FK__parents__town_ID__59904A2C" FromRole="parent" ToRole="towns_enum" />
         </EntityType>
-        <EntityType Name="specialty_enum">
+        <EntityType Name="speciality_enum">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="faculty_ID" Type="Int32" Nullable="false" />
-          <Property Name="admission" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="faculty_enum" Relationship="Self.FK_specialty_enum_faculty_enum" FromRole="specialty_enum" ToRole="faculty_enum" />
-          <NavigationProperty Name="specialty_priorities" Relationship="Self.FK_specialty_priorities_specialty_enum" FromRole="specialty_enum" ToRole="specialty_priorities" />
+          <Property Name="oksk_ID" Type="Int32" Nullable="false" />
+          <Property Name="group_ID" Type="Int16" Nullable="false" />
+          <Property Name="financing" Type="Byte" Nullable="false" />
+          <Property Name="university" Type="Int32" Nullable="false" />
+          <Property Name="form" Type="Byte" Nullable="false" />
+          <Property Name="training_period" Type="Byte" Nullable="false" />
+          <Property Name="enroll_in" Type="Byte" Nullable="false" />
+          <Property Name="admission_total" Type="Int16" Nullable="false" />
+          <Property Name="admission_orphans" Type="Int16" Nullable="false" />
+          <Property Name="admission_guards" Type="Int16" Nullable="false" />
+          <Property Name="date_start" Type="DateTime" Precision="0" />
+          <Property Name="date_end" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="enroll_in_enum" Relationship="Self.FK_speciality_enum_enroll_in_enum" FromRole="speciality_enum" ToRole="enroll_in_enum" />
+          <NavigationProperty Name="financing_enum" Relationship="Self.FK_speciality_enum_financing_enum" FromRole="speciality_enum" ToRole="financing_enum" />
+          <NavigationProperty Name="form_enum" Relationship="Self.FK_speciality_enum_form_enum" FromRole="speciality_enum" ToRole="form_enum" />
+          <NavigationProperty Name="min_score_spec_link" Relationship="Self.FK_min_score_spec_link_specialty_enum" FromRole="speciality_enum" ToRole="min_score_spec_link" />
+          <NavigationProperty Name="oksk_specialities" Relationship="Self.FK_speciality_enum_oksk_specialities" FromRole="speciality_enum" ToRole="oksk_specialities" />
+          <NavigationProperty Name="speciality_group" Relationship="Self.FK_speciality_enum_speciality_group" FromRole="speciality_enum" ToRole="speciality_group" />
+          <NavigationProperty Name="training_period_enum" Relationship="Self.FK_speciality_enum_training_period_enum" FromRole="speciality_enum" ToRole="training_period_enum" />
+          <NavigationProperty Name="university_enum" Relationship="Self.FK_speciality_enum_university_enum" FromRole="speciality_enum" ToRole="university_enum" />
+          <NavigationProperty Name="speciality_priorities" Relationship="EnrollmentCampaignModel.FK_specialty_priorities_specialty_enum" FromRole="speciality_enum" ToRole="speciality_priorities" />
         </EntityType>
-        <EntityType Name="specialty_priorities">
+        <EntityType Name="speciality_group">
           <Key>
-            <PropertyRef Name="enrollee_ID" />
-            <PropertyRef Name="specialty_ID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="enrollee_ID" Type="Int32" Nullable="false" />
-          <Property Name="specialty_ID" Type="Int32" Nullable="false" />
-          <Property Name="priority" Type="Byte" Nullable="false" />
-          <NavigationProperty Name="enrollee" Relationship="Self.FK_specialty_priorities_enrollees" FromRole="specialty_priorities" ToRole="enrollees" />
-          <NavigationProperty Name="specialty_enum" Relationship="Self.FK_specialty_priorities_specialty_enum" FromRole="specialty_priorities" ToRole="specialty_enum" />
+          <Property Name="ID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="add_if_selected" Type="Int16" />
+          <NavigationProperty Name="speciality_enum" Relationship="Self.FK_speciality_enum_speciality_group" FromRole="speciality_group" ToRole="speciality_enum" />
+          <NavigationProperty Name="speciality_group1" Relationship="Self.FK_speciality_group_speciality_group" FromRole="speciality_group" ToRole="speciality_group1" />
+          <NavigationProperty Name="speciality_group2" Relationship="Self.FK_speciality_group_speciality_group" FromRole="speciality_group1" ToRole="speciality_group" />
+          <Property Name="select_limit" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="towns_enum">
           <Key>
@@ -377,6 +885,15 @@
           <Property Name="country_ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="countries_enum" Relationship="Self.FK_towns_enum_countries_enum" FromRole="towns_enum" ToRole="countries_enum" />
           <NavigationProperty Name="enrollees" Relationship="Self.FK_enrollees_towns_enum" FromRole="towns_enum" ToRole="enrollees" />
+          <NavigationProperty Name="parents" Relationship="EnrollmentCampaignModel.FK__parents__town_ID__59904A2C" FromRole="towns_enum" ToRole="parent" />
+        </EntityType>
+        <EntityType Name="training_period_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="speciality_enum" Relationship="Self.FK_speciality_enum_training_period_enum" FromRole="training_period_enum" ToRole="speciality_enum" />
         </EntityType>
         <EntityType Name="Tree">
           <Key>
@@ -388,6 +905,22 @@
           <NavigationProperty Name="Tree1" Relationship="Self.FK_Tree_Tree" FromRole="Tree" ToRole="Tree1" />
           <NavigationProperty Name="Tree2" Relationship="Self.FK_Tree_Tree" FromRole="Tree1" ToRole="Tree" />
         </EntityType>
+        <EntityType Name="university_enum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="speciality_enum" Relationship="Self.FK_speciality_enum_university_enum" FromRole="university_enum" ToRole="speciality_enum" />
+        </EntityType>
+        <EntityType Name="writing_locker">
+          <Key>
+            <PropertyRef Name="enrollee_ID" />
+          </Key>
+          <Property Name="enrollee_ID" Type="Int32" Nullable="false" />
+          <Property Name="begin_time" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="enrollee" Relationship="Self.FK_writing_locker_enrollees" FromRole="writing_locker" ToRole="enrollees" />
+        </EntityType>
         <Association Name="FK_towns_enum_countries_enum">
           <End Role="countries_enum" Type="Self.countries_enum" Multiplicity="1" />
           <End Role="towns_enum" Type="Self.towns_enum" Multiplicity="*" />
@@ -397,6 +930,18 @@
             </Principal>
             <Dependent Role="towns_enum">
               <PropertyRef Name="country_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CT_min_scores_CT_enum">
+          <End Role="CT_enum" Type="Self.CT_enum" Multiplicity="1" />
+          <End Role="CT_min_scores" Type="Self.CT_min_scores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CT_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CT_min_scores">
+              <PropertyRef Name="CT_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -412,6 +957,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_min_score_spec_link_CT_min_scores">
+          <End Role="CT_min_scores" Type="Self.CT_min_scores" Multiplicity="1" />
+          <End Role="min_score_spec_link" Type="Self.min_score_spec_link" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CT_min_scores">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="min_score_spec_link">
+              <PropertyRef Name="min_score_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_min_score_spec_link_CT_priorities_enum">
+          <End Role="CT_priorities_enum" Type="Self.CT_priorities_enum" Multiplicity="1" />
+          <End Role="min_score_spec_link" Type="Self.min_score_spec_link" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CT_priorities_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="min_score_spec_link">
+              <PropertyRef Name="priority" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CT_results_enrollees">
           <End Role="enrollees" Type="Self.enrollee" Multiplicity="1" />
           <End Role="CT_results" Type="Self.CT_results" Multiplicity="*" />
@@ -421,6 +990,18 @@
             </Principal>
             <Dependent Role="CT_results">
               <PropertyRef Name="enrollee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_enum_enroll_in_enum">
+          <End Role="enroll_in_enum" Type="Self.enroll_in_enum" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="enroll_in_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="enroll_in" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -448,39 +1029,135 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_specialty_priorities_enrollees">
+        <Association Name="FK_writing_locker_enrollees">
           <End Role="enrollees" Type="Self.enrollee" Multiplicity="1" />
-          <End Role="specialty_priorities" Type="Self.specialty_priorities" Multiplicity="*" />
+          <End Role="writing_locker" Type="Self.writing_locker" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="enrollees">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="specialty_priorities">
+            <Dependent Role="writing_locker">
               <PropertyRef Name="enrollee_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_specialty_enum_faculty_enum">
-          <End Role="faculty_enum" Type="Self.faculty_enum" Multiplicity="1" />
-          <End Role="specialty_enum" Type="Self.specialty_enum" Multiplicity="*" />
+        <Association Name="FK_speciality_enum_financing_enum">
+          <End Role="financing_enum" Type="Self.financing_enum" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="faculty_enum">
+            <Principal Role="financing_enum">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="specialty_enum">
-              <PropertyRef Name="faculty_ID" />
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="financing" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_specialty_priorities_specialty_enum">
-          <End Role="specialty_enum" Type="Self.specialty_enum" Multiplicity="1" />
-          <End Role="specialty_priorities" Type="Self.specialty_priorities" Multiplicity="*" />
+        <Association Name="FK_speciality_enum_form_enum">
+          <End Role="form_enum" Type="Self.form_enum" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="specialty_enum">
+            <Principal Role="form_enum">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="specialty_priorities">
-              <PropertyRef Name="specialty_ID" />
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="form" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_min_score_spec_link_specialty_enum">
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="1" />
+          <End Role="min_score_spec_link" Type="Self.min_score_spec_link" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="speciality_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="min_score_spec_link">
+              <PropertyRef Name="speciality_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_oksk_specialities_oksk_names_additional">
+          <End Role="oksk_names_additional" Type="Self.oksk_names_additional" Multiplicity="0..1" />
+          <End Role="oksk_specialities" Type="Self.oksk_specialities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oksk_names_additional">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="oksk_specialities">
+              <PropertyRef Name="name_additional_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_oksk_specialities_oksk_names_main">
+          <End Role="oksk_names_main" Type="Self.oksk_names_main" Multiplicity="1" />
+          <End Role="oksk_specialities" Type="Self.oksk_specialities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oksk_names_main">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="oksk_specialities">
+              <PropertyRef Name="name_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_enum_oksk_specialities">
+          <End Role="oksk_specialities" Type="Self.oksk_specialities" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="oksk_specialities">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="oksk_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_enum_speciality_group">
+          <End Role="speciality_group" Type="Self.speciality_group" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="speciality_group">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="group_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_enum_training_period_enum">
+          <End Role="training_period_enum" Type="Self.training_period_enum" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="training_period_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="training_period" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_enum_university_enum">
+          <End Role="university_enum" Type="Self.university_enum" Multiplicity="1" />
+          <End Role="speciality_enum" Type="Self.speciality_enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="university_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_enum">
+              <PropertyRef Name="university" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_group_speciality_group">
+          <End Role="speciality_group" Type="Self.speciality_group" Multiplicity="0..1" />
+          <End Role="speciality_group1" Type="Self.speciality_group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="speciality_group">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_group1">
+              <PropertyRef Name="add_if_selected" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -496,28 +1173,60 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="oksk_spec_qualif_link">
+          <End Role="oksk_qualifications" Type="Self.oksk_qualifications" Multiplicity="*" />
+          <End Role="oksk_specialities" Type="Self.oksk_specialities" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="EnrollmentCampaignEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="countries_enum" EntityType="Self.countries_enum" />
           <EntitySet Name="CT_enum" EntityType="Self.CT_enum" />
+          <EntitySet Name="CT_min_scores" EntityType="Self.CT_min_scores" />
+          <EntitySet Name="CT_priorities_enum" EntityType="Self.CT_priorities_enum" />
           <EntitySet Name="CT_results" EntityType="Self.CT_results" />
+          <EntitySet Name="enroll_in_enum" EntityType="Self.enroll_in_enum" />
           <EntitySet Name="enrollees" EntityType="Self.enrollee" />
-          <EntitySet Name="faculty_enum" EntityType="Self.faculty_enum" />
+          <EntitySet Name="financing_enum" EntityType="Self.financing_enum" />
+          <EntitySet Name="form_enum" EntityType="Self.form_enum" />
+          <EntitySet Name="min_score_spec_link" EntityType="Self.min_score_spec_link" />
+          <EntitySet Name="oksk_names_additional" EntityType="Self.oksk_names_additional" />
+          <EntitySet Name="oksk_names_main" EntityType="Self.oksk_names_main" />
+          <EntitySet Name="oksk_qualifications" EntityType="Self.oksk_qualifications" />
+          <EntitySet Name="oksk_specialities" EntityType="Self.oksk_specialities" />
           <EntitySet Name="parents" EntityType="Self.parent" />
-          <EntitySet Name="specialty_enum" EntityType="Self.specialty_enum" />
-          <EntitySet Name="specialty_priorities" EntityType="Self.specialty_priorities" />
+          <EntitySet Name="speciality_enum" EntityType="Self.speciality_enum" />
+          <EntitySet Name="speciality_group" EntityType="Self.speciality_group" />
           <EntitySet Name="towns_enum" EntityType="Self.towns_enum" />
+          <EntitySet Name="training_period_enum" EntityType="Self.training_period_enum" />
           <EntitySet Name="Trees" EntityType="Self.Tree" />
+          <EntitySet Name="university_enum" EntityType="Self.university_enum" />
+          <EntitySet Name="writing_locker" EntityType="Self.writing_locker" />
           <AssociationSet Name="FK_towns_enum_countries_enum" Association="Self.FK_towns_enum_countries_enum">
             <End Role="countries_enum" EntitySet="countries_enum" />
             <End Role="towns_enum" EntitySet="towns_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CT_min_scores_CT_enum" Association="Self.FK_CT_min_scores_CT_enum">
+            <End Role="CT_enum" EntitySet="CT_enum" />
+            <End Role="CT_min_scores" EntitySet="CT_min_scores" />
           </AssociationSet>
           <AssociationSet Name="FK_CT_results_CT_enum" Association="Self.FK_CT_results_CT_enum">
             <End Role="CT_enum" EntitySet="CT_enum" />
             <End Role="CT_results" EntitySet="CT_results" />
           </AssociationSet>
+          <AssociationSet Name="FK_min_score_spec_link_CT_min_scores" Association="Self.FK_min_score_spec_link_CT_min_scores">
+            <End Role="CT_min_scores" EntitySet="CT_min_scores" />
+            <End Role="min_score_spec_link" EntitySet="min_score_spec_link" />
+          </AssociationSet>
+          <AssociationSet Name="FK_min_score_spec_link_CT_priorities_enum" Association="Self.FK_min_score_spec_link_CT_priorities_enum">
+            <End Role="CT_priorities_enum" EntitySet="CT_priorities_enum" />
+            <End Role="min_score_spec_link" EntitySet="min_score_spec_link" />
+          </AssociationSet>
           <AssociationSet Name="FK_CT_results_enrollees" Association="Self.FK_CT_results_enrollees">
             <End Role="enrollees" EntitySet="enrollees" />
             <End Role="CT_results" EntitySet="CT_results" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_enroll_in_enum" Association="Self.FK_speciality_enum_enroll_in_enum">
+            <End Role="enroll_in_enum" EntitySet="enroll_in_enum" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
           </AssociationSet>
           <AssociationSet Name="FK_enrollees_towns_enum" Association="Self.FK_enrollees_towns_enum">
             <End Role="towns_enum" EntitySet="towns_enum" />
@@ -527,45 +1236,145 @@
             <End Role="enrollees" EntitySet="enrollees" />
             <End Role="parents" EntitySet="parents" />
           </AssociationSet>
-          <AssociationSet Name="FK_specialty_priorities_enrollees" Association="Self.FK_specialty_priorities_enrollees">
+          <AssociationSet Name="FK_writing_locker_enrollees" Association="Self.FK_writing_locker_enrollees">
             <End Role="enrollees" EntitySet="enrollees" />
-            <End Role="specialty_priorities" EntitySet="specialty_priorities" />
+            <End Role="writing_locker" EntitySet="writing_locker" />
           </AssociationSet>
-          <AssociationSet Name="FK_specialty_enum_faculty_enum" Association="Self.FK_specialty_enum_faculty_enum">
-            <End Role="faculty_enum" EntitySet="faculty_enum" />
-            <End Role="specialty_enum" EntitySet="specialty_enum" />
+          <AssociationSet Name="FK_speciality_enum_financing_enum" Association="Self.FK_speciality_enum_financing_enum">
+            <End Role="financing_enum" EntitySet="financing_enum" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
           </AssociationSet>
-          <AssociationSet Name="FK_specialty_priorities_specialty_enum" Association="Self.FK_specialty_priorities_specialty_enum">
-            <End Role="specialty_enum" EntitySet="specialty_enum" />
-            <End Role="specialty_priorities" EntitySet="specialty_priorities" />
+          <AssociationSet Name="FK_speciality_enum_form_enum" Association="Self.FK_speciality_enum_form_enum">
+            <End Role="form_enum" EntitySet="form_enum" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_min_score_spec_link_specialty_enum" Association="Self.FK_min_score_spec_link_specialty_enum">
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+            <End Role="min_score_spec_link" EntitySet="min_score_spec_link" />
+          </AssociationSet>
+          <AssociationSet Name="FK_oksk_specialities_oksk_names_additional" Association="Self.FK_oksk_specialities_oksk_names_additional">
+            <End Role="oksk_names_additional" EntitySet="oksk_names_additional" />
+            <End Role="oksk_specialities" EntitySet="oksk_specialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_oksk_specialities_oksk_names_main" Association="Self.FK_oksk_specialities_oksk_names_main">
+            <End Role="oksk_names_main" EntitySet="oksk_names_main" />
+            <End Role="oksk_specialities" EntitySet="oksk_specialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_oksk_specialities" Association="Self.FK_speciality_enum_oksk_specialities">
+            <End Role="oksk_specialities" EntitySet="oksk_specialities" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_speciality_group" Association="Self.FK_speciality_enum_speciality_group">
+            <End Role="speciality_group" EntitySet="speciality_group" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_training_period_enum" Association="Self.FK_speciality_enum_training_period_enum">
+            <End Role="training_period_enum" EntitySet="training_period_enum" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_enum_university_enum" Association="Self.FK_speciality_enum_university_enum">
+            <End Role="university_enum" EntitySet="university_enum" />
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_group_speciality_group" Association="Self.FK_speciality_group_speciality_group">
+            <End Role="speciality_group" EntitySet="speciality_group" />
+            <End Role="speciality_group1" EntitySet="speciality_group" />
           </AssociationSet>
           <AssociationSet Name="FK_Tree_Tree" Association="Self.FK_Tree_Tree">
             <End Role="Tree" EntitySet="Trees" />
             <End Role="Tree1" EntitySet="Trees" />
           </AssociationSet>
-          <EntitySet Name="writing_locker" EntityType="EnrollmentCampaignModel.writing_locker" />
-          <AssociationSet Name="FK_writing_locker_enrollees" Association="EnrollmentCampaignModel.FK_writing_locker_enrollees">
-            <End Role="enrollee" EntitySet="enrollees" />
-            <End Role="writing_locker" EntitySet="writing_locker" />
+          <AssociationSet Name="oksk_spec_qualif_link" Association="Self.oksk_spec_qualif_link">
+            <End Role="oksk_qualifications" EntitySet="oksk_qualifications" />
+            <End Role="oksk_specialities" EntitySet="oksk_specialities" />
           </AssociationSet>
+          <EntitySet Name="pleas" EntityType="EnrollmentCampaignModel.plea" />
+          <EntitySet Name="speciality_priorities" EntityType="EnrollmentCampaignModel.speciality_priorities" />
+          <AssociationSet Name="FK_plea_enrollees" Association="EnrollmentCampaignModel.FK_plea_enrollees">
+            <End Role="enrollee" EntitySet="enrollees" />
+            <End Role="plea" EntitySet="pleas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_speciality_priorities_plea" Association="EnrollmentCampaignModel.FK_speciality_priorities_plea">
+            <End Role="plea" EntitySet="pleas" />
+            <End Role="speciality_priorities" EntitySet="speciality_priorities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_specialty_priorities_specialty_enum" Association="EnrollmentCampaignModel.FK_specialty_priorities_specialty_enum">
+            <End Role="speciality_enum" EntitySet="speciality_enum" />
+            <End Role="speciality_priorities" EntitySet="speciality_priorities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__parents__town_ID__59904A2C" Association="EnrollmentCampaignModel.FK__parents__town_ID__59904A2C">
+            <End Role="towns_enum" EntitySet="towns_enum" />
+            <End Role="parent" EntitySet="parents" />
+          </AssociationSet>
+          <FunctionImport Name="ClearLocker">
+            <Parameter Name="seconds" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
-        <EntityType Name="writing_locker">
+        <EntityType Name="plea">
           <Key>
-            <PropertyRef Name="enrollee_ID" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="enrollee_ID" Type="Int32" Nullable="false" />
-          <Property Name="begin_time" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="enrollee" Relationship="EnrollmentCampaignModel.FK_writing_locker_enrollees" FromRole="writing_locker" ToRole="enrollee" />
+          <NavigationProperty Name="enrollee" Relationship="EnrollmentCampaignModel.FK_plea_enrollees" FromRole="plea" ToRole="enrollee" />
+          <NavigationProperty Name="speciality_priorities" Relationship="EnrollmentCampaignModel.FK_speciality_priorities_plea" FromRole="plea" ToRole="speciality_priorities" />
         </EntityType>
-        <Association Name="FK_writing_locker_enrollees">
+        <EntityType Name="speciality_priorities">
+          <Key>
+            <PropertyRef Name="plea_ID" />
+            <PropertyRef Name="speciality_ID" />
+          </Key>
+          <Property Name="plea_ID" Type="Int32" Nullable="false" />
+          <Property Name="speciality_ID" Type="Int32" Nullable="false" />
+          <Property Name="priority" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="plea" Relationship="EnrollmentCampaignModel.FK_speciality_priorities_plea" FromRole="speciality_priorities" ToRole="plea" />
+          <NavigationProperty Name="speciality_enum" Relationship="EnrollmentCampaignModel.FK_specialty_priorities_specialty_enum" FromRole="speciality_priorities" ToRole="speciality_enum" />
+        </EntityType>
+        <Association Name="FK_plea_enrollees">
           <End Type="EnrollmentCampaignModel.enrollee" Role="enrollee" Multiplicity="1" />
-          <End Type="EnrollmentCampaignModel.writing_locker" Role="writing_locker" Multiplicity="0..1" />
+          <End Type="EnrollmentCampaignModel.plea" Role="plea" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="enrollee">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="writing_locker">
+            <Dependent Role="plea">
               <PropertyRef Name="enrollee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_speciality_priorities_plea">
+          <End Type="EnrollmentCampaignModel.plea" Role="plea" Multiplicity="1" />
+          <End Type="EnrollmentCampaignModel.speciality_priorities" Role="speciality_priorities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="plea">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_priorities">
+              <PropertyRef Name="plea_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_specialty_priorities_specialty_enum">
+          <End Type="EnrollmentCampaignModel.speciality_enum" Role="speciality_enum" Multiplicity="1" />
+          <End Type="EnrollmentCampaignModel.speciality_priorities" Role="speciality_priorities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="speciality_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="speciality_priorities">
+              <PropertyRef Name="speciality_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__parents__town_ID__59904A2C">
+          <End Type="EnrollmentCampaignModel.towns_enum" Role="towns_enum" Multiplicity="0..1" />
+          <End Type="EnrollmentCampaignModel.parent" Role="parent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="towns_enum">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="parent">
+              <PropertyRef Name="town_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -591,12 +1400,38 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CT_min_scores">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.CT_min_scores">
+              <MappingFragment StoreEntitySet="CT_min_scores">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CT_ID" ColumnName="CT_ID" />
+                <ScalarProperty Name="min_score" ColumnName="min_score" />
+                <ScalarProperty Name="min_score_additional" ColumnName="min_score_additional" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CT_priorities_enum">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.CT_priorities_enum">
+              <MappingFragment StoreEntitySet="CT_priorities_enum">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CT_results">
             <EntityTypeMapping TypeName="EnrollmentCampaignModel.CT_results">
               <MappingFragment StoreEntitySet="CT_results">
                 <ScalarProperty Name="enrollee_ID" ColumnName="enrollee_ID" />
                 <ScalarProperty Name="CT_ID" ColumnName="CT_ID" />
                 <ScalarProperty Name="result" ColumnName="result" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="enroll_in_enum">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.enroll_in_enum">
+              <MappingFragment StoreEntitySet="enroll_in_enum">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -617,17 +1452,69 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="faculty_enum">
-            <EntityTypeMapping TypeName="EnrollmentCampaignModel.faculty_enum">
-              <MappingFragment StoreEntitySet="faculty_enum">
+          <EntitySetMapping Name="financing_enum">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.financing_enum">
+              <MappingFragment StoreEntitySet="financing_enum">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="form_enum">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.form_enum">
+              <MappingFragment StoreEntitySet="form_enum">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="min_score_spec_link">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.min_score_spec_link">
+              <MappingFragment StoreEntitySet="min_score-spec_link">
+                <ScalarProperty Name="speciality_ID" ColumnName="speciality_ID" />
+                <ScalarProperty Name="min_score_ID" ColumnName="min_score_ID" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="oksk_names_additional">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.oksk_names_additional">
+              <MappingFragment StoreEntitySet="oksk_names_additional">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="additional" ColumnName="additional" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="oksk_names_main">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.oksk_names_main">
+              <MappingFragment StoreEntitySet="oksk_names_main">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="oksk_qualifications">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.oksk_qualifications">
+              <MappingFragment StoreEntitySet="oksk_qualifications">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="oksk_specialities">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.oksk_specialities">
+              <MappingFragment StoreEntitySet="oksk_specialities">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name_ID" ColumnName="name_ID" />
+                <ScalarProperty Name="name_additional_ID" ColumnName="name_additional_ID" />
+                <ScalarProperty Name="code" ColumnName="code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="parents">
             <EntityTypeMapping TypeName="EnrollmentCampaignModel.parent">
               <MappingFragment StoreEntitySet="parents">
+                <ScalarProperty Name="town_ID" ColumnName="town_ID" />
                 <ScalarProperty Name="enrollee_ID" ColumnName="enrollee_ID" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="surname" ColumnName="surname" />
@@ -636,22 +1523,31 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="specialty_enum">
-            <EntityTypeMapping TypeName="EnrollmentCampaignModel.specialty_enum">
-              <MappingFragment StoreEntitySet="specialty_enum">
+          <EntitySetMapping Name="speciality_enum">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.speciality_enum">
+              <MappingFragment StoreEntitySet="speciality_enum">
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="faculty_ID" ColumnName="faculty_ID" />
-                <ScalarProperty Name="admission" ColumnName="admission" />
+                <ScalarProperty Name="oksk_ID" ColumnName="oksk_ID" />
+                <ScalarProperty Name="group_ID" ColumnName="group_ID" />
+                <ScalarProperty Name="financing" ColumnName="financing" />
+                <ScalarProperty Name="university" ColumnName="university" />
+                <ScalarProperty Name="form" ColumnName="form" />
+                <ScalarProperty Name="training_period" ColumnName="training_period" />
+                <ScalarProperty Name="enroll_in" ColumnName="enroll_in" />
+                <ScalarProperty Name="admission_total" ColumnName="admission_total" />
+                <ScalarProperty Name="admission_orphans" ColumnName="admission_orphans" />
+                <ScalarProperty Name="admission_guards" ColumnName="admission_guards" />
+                <ScalarProperty Name="date_start" ColumnName="date_start" />
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="specialty_priorities">
-            <EntityTypeMapping TypeName="EnrollmentCampaignModel.specialty_priorities">
-              <MappingFragment StoreEntitySet="specialty_priorities">
-                <ScalarProperty Name="enrollee_ID" ColumnName="enrollee_ID" />
-                <ScalarProperty Name="specialty_ID" ColumnName="specialty_ID" />
-                <ScalarProperty Name="priority" ColumnName="priority" />
+          <EntitySetMapping Name="speciality_group">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.speciality_group">
+              <MappingFragment StoreEntitySet="speciality_group">
+                <ScalarProperty Name="select_limit" ColumnName="select_limit" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="add_if_selected" ColumnName="add_if_selected" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -664,6 +1560,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="training_period_enum">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.training_period_enum">
+              <MappingFragment StoreEntitySet="training_period_enum">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Trees">
             <EntityTypeMapping TypeName="EnrollmentCampaignModel.Tree">
               <MappingFragment StoreEntitySet="Tree">
@@ -673,14 +1577,48 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="writing_locker">
-            <EntityTypeMapping TypeName="EnrollmentCampaignModel.writing_locker">
-              <MappingFragment StoreEntitySet="writing_locker">
-                <ScalarProperty Name="begin_time" ColumnName="begin_time" />
-                <ScalarProperty Name="enrollee_ID" ColumnName="enrollee_ID" />
+          <EntitySetMapping Name="university_enum">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.university_enum">
+              <MappingFragment StoreEntitySet="university_enum">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="writing_locker">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.writing_locker">
+              <MappingFragment StoreEntitySet="writing_locker">
+                <ScalarProperty Name="enrollee_ID" ColumnName="enrollee_ID" />
+                <ScalarProperty Name="begin_time" ColumnName="begin_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="oksk_spec_qualif_link" TypeName="EnrollmentCampaignModel.oksk_spec_qualif_link" StoreEntitySet="oksk_spec-qualif_link">
+            <EndProperty Name="oksk_qualifications">
+              <ScalarProperty Name="ID" ColumnName="qualification_ID" />
+            </EndProperty>
+            <EndProperty Name="oksk_specialities">
+              <ScalarProperty Name="ID" ColumnName="speciality_ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="pleas">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.plea">
+              <MappingFragment StoreEntitySet="plea">
+                <ScalarProperty Name="enrollee_ID" ColumnName="enrollee_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="speciality_priorities">
+            <EntityTypeMapping TypeName="EnrollmentCampaignModel.speciality_priorities">
+              <MappingFragment StoreEntitySet="speciality_priorities">
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="speciality_ID" ColumnName="speciality_ID" />
+                <ScalarProperty Name="plea_ID" ColumnName="plea_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ClearLocker" FunctionName="Хранилище EnrollmentCampaignModel.ClearLocker" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -22,7 +22,8 @@
                         <th>@e.patronymic</th>
                         <th>
                             @Html.ActionLink("More info", "Personal", new { e.ID }, new { @class = "btn btn-primary" })
-                            @Html.ActionLink("Edit", "Edit", new {e.ID}, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Edit", "Edit", new { e.ID }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Application", "Plea", new { e.ID }, new { @class = "btn btn-primary" })
                         </th>
                     </tr>
                 }
@@ -31,6 +32,8 @@
         <div class="btn-group">
             @Html.ActionLink("Create", "Edit", new { ID=0 }, new { @class = "btn btn-primary" })
             @Html.ActionLink("Tree", "Tree",null,new { @class="btn btn-primary"})
+            @Html.ActionLink("Clear locker", "ClearLocker", null, new { @class = "btn btn-primary" })
+
         </div>
     </div>
 </body>

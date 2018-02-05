@@ -15,7 +15,7 @@ namespace EnrollmentCampaign
     public partial class CT_results
     {
         public int enrollee_ID { get; set; }
-        public int CT_ID { get; set; }
+        public byte CT_ID { get; set; }
         public byte result { get; set; }
     
         public virtual CT_enum CT_enum { get; set; }
